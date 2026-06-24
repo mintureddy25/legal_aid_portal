@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Brand: navy ── */
+  --color-navy-50: #eef2f7;
+  --color-navy-100: #d3dded;
+  --color-navy-200: #9fb3d1;
+  --color-navy-400: #41618f;
+  --color-navy-600: #14395f;
+  --color-navy-800: #0a2540;
+  --color-navy-900: #071a2e;
+
+  /* ── Brand: green ── */
+  --color-brand-50: #e8f6f0;
+  --color-brand-100: #c7e9da;
+  --color-brand-300: #6ec6a3;
+  --color-brand-500: #1d9e75;
+  --color-brand-600: #178a64;
+  --color-brand-700: #0f6e4f;
+
+  /* ── Neutrals (slate) ── */
+  --color-ink: #0f172a;
+  --color-muted: #64748b;
+  --color-line: #e2e8f0;
+  --color-surface: #ffffff;
+  --color-canvas: #f7f9fc;
+
+  /* ── Semantic ── */
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-success: #1d9e75;
+
+  /* ── Fonts ── */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-telugu: var(--font-telugu), var(--font-inter), sans-serif;
+
+  /* ── Radius ── */
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.25rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Telugu text gets the Telugu-capable font stack */
+:lang(te),
+[data-lang="te"] {
+  font-family: var(--font-telugu);
+}
+
+/* Clickable elements get the pointer cursor; disabled ones signal not-allowed */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label[for],
+select:not(:disabled),
+summary {
+  cursor: pointer;
+}
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+/* Visible, consistent focus rings everywhere (a11y) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-up 0.4s ease-out both; }
+
+/* Tabular figures for data/timers/refs */
+.tabular { font-variant-numeric: tabular-nums; }

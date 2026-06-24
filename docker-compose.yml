@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: legalaid_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: legalaid
+      POSTGRES_PASSWORD: legalaid_dev_pw
+      POSTGRES_DB: legalaid
+    ports:
+      - "5544:5432"
+    volumes:
+      - legalaid_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U legalaid -d legalaid"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  legalaid_pgdata:

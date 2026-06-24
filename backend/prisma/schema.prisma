@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CaseStatus {
+  PENDING
+  IN_PROGRESS
+  RESPONDED
+  CLOSED
+}
+
+enum Urgency {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ChatSender {
+  CLIENT
+  LAWYER
+}
+
+enum AppointmentStatus {
+  BOOKED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+/// A legal-aid intake case. `reference` is the public LA-XXXXXX id.
+model Case {
+  id            String     @id @default(cuid())
+  reference     String     @unique
+  // Step 1
+  category      String
+  // Step 2 — personal
+  name          String
+  age           Int?
+  phone         String
+  email         String?
+  state         String?
+  language      String     @default("English")
+  // Step 3 — case
+  summary       String
+  description   String
+  urgency       Urgency    @default(MEDIUM)
+  priorConsult  Boolean    @default(false)
+  documents     String?
+  // workflow
+  status        CaseStatus @default(PENDING)
+  notes         CaseNote[]
+  messages      ChatMessage[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([status])
+  @@index([category])
+  @@index([createdAt])
+}
+
+/// Internal lawyer-only note on a case.
+model CaseNote {
+  id        String   @id @default(cuid())
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  caseId    String
+  body      String
+  author    String
+  createdAt DateTime @default(now())
+
+  @@index([caseId])
+}
+
+/// Live-chat message bound to a case room. Persisted so history survives reconnects.
+model ChatMessage {
+  id        String     @id @default(cuid())
+  case      Case       @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  caseId    String
+  sender    ChatSender
+  body      String
+  readAt    DateTime?
+  createdAt DateTime   @default(now())
+
+  @@index([caseId, createdAt])
+}
+
+/// The lawyer / portal owner. (Single-admin to start, but modelled as many.)
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  displayName  String?
+  createdAt    DateTime @default(now())
+}
+
+/// Blog / legal-resources article, owner-managed.
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String?
+  excerpt     String?
+  body        String
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, createdAt])
+}
+
+/// Bookable consultation slot set by the owner.
+model Slot {
+  id          String       @id @default(cuid())
+  startsAt    DateTime
+  durationMin Int          @default(15)
+  isBooked    Boolean      @default(false)
+  appointment Appointment?
+  createdAt   DateTime     @default(now())
+
+  @@index([startsAt])
+}
+
+/// A client booking against a slot.
+model Appointment {
+  id        String            @id @default(cuid())
+  slot      Slot              @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  slotId    String            @unique
+  name      String
+  phone     String
+  email     String?
+  reason    String?
+  caseRef   String?
+  status    AppointmentStatus @default(BOOKED)
+  createdAt DateTime          @default(now())
+}
