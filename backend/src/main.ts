@@ -14,10 +14,14 @@ async function bootstrap() {
     }),
   );
 
-  const origins = (process.env.CORS_ORIGIN ?? 'http://localhost:3000')
-    .split(',')
-    .map((s) => s.trim());
-  app.enableCors({ origin: origins, credentials: true });
+  const corsEnv = process.env.CORS_ORIGIN ?? 'http://localhost:3000';
+  // CORS_ORIGIN="*" reflects any request origin (works with credentials);
+  // otherwise allow only the comma-separated allowlist.
+  const origin =
+    corsEnv.trim() === '*'
+      ? true
+      : corsEnv.split(',').map((s) => s.trim());
+  app.enableCors({ origin, credentials: true });
 
   await app.listen(process.env.PORT ?? 3010);
 }
