@@ -78,7 +78,7 @@ export class NotificationsService {
         </div>
         <div style="padding:24px;color:#0f172a;line-height:1.6">
           <p>Hi ${data.name},</p>
-          <p>Your legal aid request has been received. Our team will contact you within <b>48 hours</b>.</p>
+          <p>Your legal aid request has been received. Our team will contact you within <b>24 hours</b>.</p>
           <p style="font-size:15px">Your reference number:</p>
           <p style="font-size:24px;font-weight:700;color:#1D9E75;letter-spacing:1px">${data.reference}</p>
           <table style="width:100%;font-size:14px;border-collapse:collapse;margin-top:8px">
