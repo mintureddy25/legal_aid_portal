@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Clock, BadgeIndianRupee, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck, Clock, BadgeIndianRupee, MessagesSquare, Sparkles } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { CATEGORIES } from "@/lib/constants";
 import { CatIcon } from "@/lib/catIcon";
@@ -52,9 +52,10 @@ export default function HomePage() {
           </div>
 
           {/* Trust stats */}
-          <dl className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
-            <Stat icon={<ShieldCheck className="size-5" />} value="1,200+" label={t("stats.cases")} />
+          <dl className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            <Stat icon={<ShieldCheck className="size-5" />} value="100+" label={t("stats.cases")} />
             <Stat icon={<Clock className="size-5" />} value={t("stats.hours")} label={t("stats.response")} />
+            <Stat icon={<MessagesSquare className="size-5" />} value={t("stats.chatValue")} label={t("stats.chat")} />
             <Stat icon={<BadgeIndianRupee className="size-5" />} value={t("stats.zero")} label={t("stats.free")} />
           </dl>
         </Container>

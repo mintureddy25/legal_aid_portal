@@ -24,15 +24,17 @@ const en: Dict = {
   "hero.badge": "Pro bono · 100% free",
   "hero.title": "Free legal guidance, for everyone.",
   "hero.subtitle":
-    "Can't afford a lawyer? Tell us your problem in a few steps. A volunteer reviews every case and gets back to you within 48 hours — confidentially, at no cost.",
+    "Can't afford a lawyer? Tell us your problem in a few steps. A volunteer reviews every case and gets back to you within 24 hours — confidentially, at no cost. Need to talk? Use the live chat.",
   "hero.cta": "Start your request",
   "hero.secondary": "Track an existing case",
 
   "stats.cases": "Cases helped",
   "stats.response": "Avg. response time",
   "stats.free": "Always free",
-  "stats.hours": "48 hours",
+  "stats.hours": "24 hours",
   "stats.zero": "₹0",
+  "stats.chat": "Live chat support",
+  "stats.chatValue": "Live",
 
   "cats.title": "What do you need help with?",
   "cats.subtitle": "Pick the area closest to your situation. Not sure? Choose “Other”.",
@@ -52,7 +54,7 @@ const en: Dict = {
   "how.step2.t": "Get a reference number",
   "how.step2.d": "Instant confirmation by email with your LA- reference.",
   "how.step3.t": "A volunteer responds",
-  "how.step3.d": "We review and reply within 48 hours, or chat live.",
+  "how.step3.d": "We review and reply within 24 hours, or chat live with you.",
 
   "cta.title": "You deserve to be heard.",
   "cta.body": "Starting takes two minutes and costs nothing.",
@@ -151,15 +153,17 @@ const te: Dict = {
   "hero.badge": "ఉచిత సేవ · 100% ఉచితం",
   "hero.title": "ప్రతి ఒక్కరికీ ఉచిత న్యాయ సలహా.",
   "hero.subtitle":
-    "లాయర్‌ను భరించలేరా? మీ సమస్యను కొన్ని దశల్లో చెప్పండి. ప్రతి కేసును ఒక వాలంటీర్ సమీక్షించి 48 గంటల్లో మీకు తిరిగి సమాధానం ఇస్తారు — గోప్యంగా, ఉచితంగా.",
+    "లాయర్‌ను భరించలేరా? మీ సమస్యను కొన్ని దశల్లో చెప్పండి. ప్రతి కేసును ఒక వాలంటీర్ సమీక్షించి 24 గంటల్లో మీకు తిరిగి సమాధానం ఇస్తారు — గోప్యంగా, ఉచితంగా. మాట్లాడాలా? లైవ్ చాట్ వాడండి.",
   "hero.cta": "మీ అభ్యర్థన ప్రారంభించండి",
   "hero.secondary": "ఉన్న కేసును ట్రాక్ చేయండి",
 
   "stats.cases": "సహాయం చేసిన కేసులు",
   "stats.response": "సగటు స్పందన సమయం",
   "stats.free": "ఎల్లప్పుడూ ఉచితం",
-  "stats.hours": "48 గంటలు",
+  "stats.hours": "24 గంటలు",
   "stats.zero": "₹0",
+  "stats.chat": "లైవ్ చాట్ సహాయం",
+  "stats.chatValue": "లైవ్",
 
   "cats.title": "మీకు ఏ విషయంలో సహాయం కావాలి?",
   "cats.subtitle": "మీ పరిస్థితికి దగ్గరగా ఉన్నదాన్ని ఎంచుకోండి. తెలియకపోతే “ఇతరం” ఎంచుకోండి.",
@@ -179,7 +183,7 @@ const te: Dict = {
   "how.step2.t": "రిఫరెన్స్ నంబర్ పొందండి",
   "how.step2.d": "మీ LA- రిఫరెన్స్‌తో ఇమెయిల్ ద్వారా తక్షణ నిర్ధారణ.",
   "how.step3.t": "వాలంటీర్ స్పందిస్తారు",
-  "how.step3.d": "48 గంటల్లో సమీక్షించి సమాధానం ఇస్తాం, లేదా లైవ్ చాట్.",
+  "how.step3.d": "24 గంటల్లో సమీక్షించి సమాధానం ఇస్తాం, లేదా మీతో లైవ్ చాట్.",
 
   "cta.title": "మీ గొంతు వినిపించాలి.",
   "cta.body": "ప్రారంభించడానికి రెండు నిమిషాలు, ఖర్చు శూన్యం.",
