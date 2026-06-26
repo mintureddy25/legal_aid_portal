@@ -106,11 +106,24 @@ model BlogPost {
   category    String?
   excerpt     String?
   body        String
+  coverImage  String?
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([published, createdAt])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }
 
 /// Bookable consultation slot set by the owner.

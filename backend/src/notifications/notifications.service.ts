@@ -51,7 +51,7 @@ export class NotificationsService {
   }
 
   private from(): string {
-    const name = this.config.get<string>('MAIL_FROM_NAME') ?? 'Legal Aid Portal';
+    const name = this.config.get<string>('MAIL_FROM_NAME') ?? 'Nyaya Seva';
     const user = this.config.get<string>('SMTP_USER');
     return `"${name}" <${user}>`;
   }
@@ -74,7 +74,7 @@ export class NotificationsService {
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
         <div style="background:#0a2540;padding:20px 24px;color:#fff">
-          <h2 style="margin:0;font-size:18px">Legal Aid Portal</h2>
+          <h2 style="margin:0;font-size:18px">Nyaya Seva</h2>
         </div>
         <div style="padding:24px;color:#0f172a;line-height:1.6">
           <p>Hi ${data.name},</p>
@@ -89,10 +89,10 @@ export class NotificationsService {
           <p style="background:#fef3c7;border-radius:8px;padding:12px;font-size:13px">
             For urgent matters you can also call the <b>NALSA helpline: 15100</b> (toll-free).
           </p>
-          <p style="color:#94a3b8;font-size:12px">— Legal Aid Portal (pro bono initiative)</p>
+          <p style="color:#94a3b8;font-size:12px">— Nyaya Seva (pro bono initiative)</p>
         </div>
       </div>`;
-    await this.send(data.email, `Your Legal Aid request — ${data.reference}`, html);
+    await this.send(data.email, `Your Nyaya Seva request — ${data.reference}`, html);
   }
 
   private async emailAdmin(data: CaseNotificationData) {
@@ -136,7 +136,7 @@ export class NotificationsService {
           <p>Hi ${a.name},</p>
           <p>Your free <b>${a.durationMin}-minute</b> legal consultation is booked for:</p>
           <p style="font-size:18px;font-weight:700;color:#1D9E75">${when}</p>
-          <p>We'll call you at the number you provided. — Legal Aid Portal</p>
+          <p>We'll call you at the number you provided. — Nyaya Seva</p>
         </div>`,
       );
     }

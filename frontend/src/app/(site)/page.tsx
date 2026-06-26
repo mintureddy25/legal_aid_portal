@@ -1,138 +1,817 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Clock, BadgeIndianRupee, MessagesSquare, Sparkles } from "lucide-react";
-import { useI18n } from "@/lib/i18n";
-import { CATEGORIES } from "@/lib/constants";
-import { CatIcon } from "@/lib/catIcon";
-import { Container, LinkButton } from "@/components/ui";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ArrowDown,
+  Scale,
+  Home,
+  Target,
+  Shield,
+  Gavel,
+  Plus,
+  Minus,
+  Phone,
+  Mail,
+  MapPin,
+  Quote,
+  ChevronLeft,
+  ChevronRight,
+  Building2,
+  CheckCircle2,
+} from "lucide-react";
+import { Reveal } from "@/components/Reveal";
+import { TextGenerate } from "@/components/TextGenerate";
+import {
+  STATS,
+  WHAT_WE_DO,
+  SERVICES,
+  EXPERTS,
+  TESTIMONIALS,
+  PARTNERS,
+  FAQS,
+  CONTACT,
+} from "@/lib/home-data";
 
-export default function HomePage() {
-  const { t } = useI18n();
+const ICONS: Record<string, typeof Scale> = { scale: Scale, home: Home, target: Target, shield: Shield };
 
+function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
-    <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-navy-800 text-white">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)",
-            backgroundSize: "28px 28px",
-          }}
-          aria-hidden
-        />
-        <div className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-brand-500/20 blur-3xl" aria-hidden />
-        <Container className="relative py-16 sm:py-24">
-          <div className="max-w-2xl animate-fade-up">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-500/15 px-3 py-1 text-sm font-medium text-brand-300 ring-1 ring-inset ring-brand-500/30">
-              <Sparkles className="size-3.5" aria-hidden />
-              {t("hero.badge")}
-            </span>
-            <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.1] sm:text-5xl lg:text-6xl">
-              {t("hero.title")}
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-navy-100 sm:text-lg">
-              {t("hero.subtitle")}
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <LinkButton href="/apply" variant="primary" className="text-base">
-                {t("hero.cta")}
-                <ArrowRight className="size-4" aria-hidden />
-              </LinkButton>
-              <LinkButton
-                href="/track"
-                variant="ghost"
-                className="border-white/20 text-white ring-white/20 hover:bg-white/10"
-              >
-                {t("hero.secondary")}
-              </LinkButton>
-            </div>
-          </div>
-
-          {/* Trust stats */}
-          <dl className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            <Stat icon={<ShieldCheck className="size-5" />} value="100+" label={t("stats.cases")} />
-            <Stat icon={<Clock className="size-5" />} value={t("stats.hours")} label={t("stats.response")} />
-            <Stat icon={<MessagesSquare className="size-5" />} value={t("stats.chatValue")} label={t("stats.chat")} />
-            <Stat icon={<BadgeIndianRupee className="size-5" />} value={t("stats.zero")} label={t("stats.free")} />
-          </dl>
-        </Container>
-      </section>
-
-      {/* Categories */}
-      <section className="py-16 sm:py-20">
-        <Container>
-          <div className="max-w-xl">
-            <h2 className="font-display text-2xl font-semibold text-navy-800 sm:text-3xl">
-              {t("cats.title")}
-            </h2>
-            <p className="mt-2 text-muted">{t("cats.subtitle")}</p>
-          </div>
-          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-3">
-            {CATEGORIES.map((c) => (
-              <li key={c.key}>
-                <Link
-                  href={`/apply?category=${encodeURIComponent(c.key)}`}
-                  className="group flex h-full flex-col gap-3 rounded-2xl bg-surface p-4 ring-1 ring-line transition-all duration-200 hover:-translate-y-0.5 hover:ring-brand-300 hover:shadow-md sm:p-5"
-                >
-                  <span className="grid size-11 place-items-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
-                    <CatIcon name={c.icon} className="size-5" />
-                  </span>
-                  <span className="font-medium text-ink">{t(c.i18n)}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      {/* How it works */}
-      <section className="bg-white py-16 sm:py-20 ring-1 ring-line">
-        <Container>
-          <h2 className="font-display text-2xl font-semibold text-navy-800 sm:text-3xl">
-            {t("how.title")}
-          </h2>
-          <ol className="mt-8 grid gap-6 sm:grid-cols-3">
-            {[1, 2, 3].map((n) => (
-              <li key={n} className="relative rounded-2xl bg-canvas p-6 ring-1 ring-line">
-                <span className="grid size-9 place-items-center rounded-full bg-navy-800 font-display text-sm font-semibold text-white tabular">
-                  {n}
-                </span>
-                <h3 className="mt-4 font-semibold text-ink">{t(`how.step${n}.t`)}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-muted">{t(`how.step${n}.d`)}</p>
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 sm:py-20">
-        <Container>
-          <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-600 px-6 py-12 text-center text-white sm:px-12 sm:py-16">
-            <h2 className="font-display text-3xl font-semibold sm:text-4xl">{t("cta.title")}</h2>
-            <p className="mx-auto mt-3 max-w-md text-navy-100">{t("cta.body")}</p>
-            <div className="mt-8 flex justify-center">
-              <LinkButton href="/apply" variant="primary" className="text-base">
-                {t("cta.button")}
-                <ArrowRight className="size-4" aria-hidden />
-              </LinkButton>
-            </div>
-          </div>
-        </Container>
-      </section>
-    </>
+    <span
+      className={`inline-flex items-center rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] ${
+        dark ? "bg-white/10 text-white ring-1 ring-white/15" : "bg-neutral-900 text-white"
+      }`}
+    >
+      {children}
+    </span>
   );
 }
 
-function Stat({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
+function LinkedInIcon({ className = "" }: { className?: string }) {
   return (
-    <div className="rounded-2xl bg-white/5 p-5 ring-1 ring-inset ring-white/10 backdrop-blur">
-      <div className="flex items-center gap-2 text-brand-300">{icon}</div>
-      <dd className="mt-2 font-display text-3xl font-semibold tabular">{value}</dd>
-      <dt className="mt-0.5 text-sm text-navy-100">{label}</dt>
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.94H5.56v8.4h2.78zM6.95 8.7a1.61 1.61 0 1 0 0-3.22 1.61 1.61 0 0 0 0 3.22zm11.39 9.64v-4.6c0-2.46-1.31-3.6-3.06-3.6-1.41 0-2.04.78-2.4 1.33v-1.14h-2.77c.04.78 0 8.4 0 8.4h2.77v-4.69c0-.25.02-.5.09-.68.2-.5.66-1.01 1.42-1.01.99 0 1.39.75 1.39 1.86v4.52h2.57z" />
+    </svg>
+  );
+}
+
+// Warm off-white used by the template for alternating sections
+const OFFWHITE = "#f3f2ef";
+
+export default function HomePage() {
+  return (
+    <div className="font-grotesk overflow-x-clip bg-white">
+      <Hero />
+      <WhoWeAre />
+      <WhatWeDo />
+      <Resources />
+      <Partners />
+      <Everything />
+      <Team />
+      <Testimonials />
+      <Faq />
+      <Contact />
+      <CtaCard />
     </div>
+  );
+}
+
+/* ───────────────────────── Hero ───────────────────────── */
+function Hero() {
+  return (
+    <section className="relative overflow-hidden" style={{ backgroundColor: OFFWHITE }}>
+      <FlowLines />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-16 sm:pt-16 lg:pt-20">
+        <div className="mx-auto max-w-5xl text-center">
+          <Reveal>
+            <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-500">
+              Securing your future
+            </span>
+          </Reveal>
+          <Reveal delay={70}>
+            <h1 className="mx-auto mt-5 max-w-4xl text-[2.6rem] font-medium leading-[1.02] tracking-[-0.03em] text-neutral-900 sm:text-6xl lg:text-[5.2rem]">
+              Legal solutions and support you can rely on
+            </h1>
+          </Reveal>
+          <Reveal delay={140}>
+            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-neutral-600 sm:text-lg">
+              Free, confidential legal aid for everyone. Our volunteer lawyers guide you through
+              every step — with live chat support and a response within 24 hours.
+            </p>
+          </Reveal>
+          <Reveal delay={210}>
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Link
+                href="/apply"
+                className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-neutral-900 px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-neutral-700 sm:w-auto"
+              >
+                Get help now
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+              </Link>
+              <Link
+                href="/track"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-medium text-neutral-900 ring-1 ring-neutral-300 transition-colors hover:bg-neutral-50 sm:w-auto"
+              >
+                Track my case
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Two law images, like the template */}
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 sm:gap-5">
+          <Reveal variant="left">
+            <HeroImage src="/hero/justice.jpg" alt="Statue of Lady Justice holding the scales" />
+          </Reveal>
+          <Reveal variant="right" delay={90}>
+            <HeroImage src="/hero/scales.jpg" alt="Scales of justice beside a judge's gavel" />
+          </Reveal>
+        </div>
+
+        <div className="mt-10 flex justify-center">
+          <span className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-neutral-400">
+            <ArrowDown className="size-4 animate-bounce" aria-hidden /> Scroll to explore
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HeroImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="relative h-60 overflow-hidden rounded-3xl ring-1 ring-black/5 sm:h-80">
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority
+        sizes="(max-width: 640px) 100vw, 50vw"
+        className="object-cover"
+      />
+    </div>
+  );
+}
+
+/** Subtle vertical streak texture for the dark sections (like the reference). */
+function DarkTexture() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 opacity-60"
+      style={{
+        backgroundImage:
+          "repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px)",
+        maskImage: "radial-gradient(120% 80% at 50% 0%, #000 0%, transparent 70%)",
+        WebkitMaskImage: "radial-gradient(120% 80% at 50% 0%, #000 0%, transparent 70%)",
+      }}
+      aria-hidden
+    />
+  );
+}
+
+/** Faint flowing contour lines in the hero background, like the reference. */
+function FlowLines() {
+  return (
+    <svg
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      preserveAspectRatio="none"
+      viewBox="0 0 1440 600"
+      aria-hidden
+    >
+      <g fill="none" stroke="#000" strokeOpacity="0.05" strokeWidth="1">
+        {Array.from({ length: 18 }).map((_, i) => {
+          const y = 40 + i * 30;
+          return (
+            <path
+              key={i}
+              d={`M-50 ${y} C 360 ${y - 46}, 720 ${y + 46}, 1080 ${y - 30} S 1490 ${y + 24}, 1490 ${y}`}
+            />
+          );
+        })}
+      </g>
+    </svg>
+  );
+}
+
+/* ───────────────────────── Who we are ───────────────────────── */
+function WhoWeAre() {
+  return (
+    <section className="relative overflow-hidden bg-neutral-950 text-white">
+      <DarkTexture />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <Eyebrow dark>About us</Eyebrow>
+          </Reveal>
+          <Reveal delay={90}>
+            <h2 className="mt-6 text-3xl font-medium tracking-tight sm:text-4xl">Who we are</h2>
+          </Reveal>
+          <TextGenerate
+            as="p"
+            className="mt-5 text-neutral-400 leading-relaxed"
+            text="Nyaya Seva is a pro bono initiative offering free legal guidance to people who need it most — families, women, workers and seniors. Founded by volunteer lawyers, we help our community navigate the legal system with dignity and confidence."
+          />
+        </div>
+
+        <div className="mt-14 grid gap-4 sm:grid-cols-3">
+          {STATS.map((s, i) => (
+            <Reveal key={s.label} delay={i * 100} variant="scale">
+              <div className="rounded-2xl bg-white/5 p-7 ring-1 ring-white/10">
+                <div className="text-4xl font-medium tracking-tight tabular">{s.value}</div>
+                <div className="mt-2 text-sm uppercase tracking-wider text-neutral-400">{s.label}</div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── What we do ───────────────────────── */
+function WhatWeDo() {
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal variant="left" className="lg:sticky lg:top-28 lg:self-start">
+            <Eyebrow>What we do</Eyebrow>
+            <h2 className="mt-6 text-3xl font-medium leading-tight tracking-tight text-neutral-900 sm:text-4xl">
+              Practical solutions through trusted legal support
+            </h2>
+            <TextGenerate
+              as="p"
+              className="mt-5 max-w-md text-neutral-600 leading-relaxed"
+              text="We focus on clear, effective steps that protect your rights at every stage. From your first question to a resolved case, you are never alone."
+            />
+            <Link
+              href="/apply"
+              className="group mt-7 inline-flex items-center gap-2 rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-700"
+            >
+              Start your request
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+            </Link>
+          </Reveal>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {WHAT_WE_DO.map((f, i) => {
+              const Icon = ICONS[f.icon] ?? Scale;
+              return (
+                <Reveal key={f.title} delay={i * 90}>
+                  <div className="group h-full rounded-2xl bg-white p-6 ring-1 ring-neutral-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-20px_rgba(0,0,0,0.25)]">
+                    <span className="grid size-12 place-items-center rounded-xl bg-neutral-900 text-white transition-colors group-hover:bg-neutral-700">
+                      <Icon className="size-5" aria-hidden />
+                    </span>
+                    <h3 className="mt-5 text-lg font-medium tracking-tight text-neutral-900">{f.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-neutral-600">{f.body}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── Resources ───────────────────────── */
+interface ResourceMeta {
+  slug: string;
+  title: string;
+  category?: string | null;
+  excerpt?: string | null;
+  coverImage?: string | null;
+}
+
+function Resources() {
+  const [posts, setPosts] = useState<ResourceMeta[] | null>(null);
+
+  useEffect(() => {
+    api<ResourceMeta[]>("/blog")
+      .then((d) => setPosts(d.slice(0, 6)))
+      .catch(() => setPosts([]));
+  }, []);
+
+  return (
+    <section style={{ backgroundColor: OFFWHITE }}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
+        <Reveal className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <Eyebrow>Resources</Eyebrow>
+            <h2 className="mt-6 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl">
+              Guides to know your rights
+            </h2>
+          </div>
+          <Link
+            href="/resources"
+            className="inline-flex items-center gap-2 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-neutral-700"
+          >
+            View all <ArrowUpRight className="size-4" aria-hidden />
+          </Link>
+        </Reveal>
+
+        {posts === null ? (
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="h-80 animate-pulse rounded-2xl bg-neutral-200/70" />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {(posts.length ? posts.slice(0, 3) : FALLBACK_RESOURCES).map((c, i) => (
+              <Reveal key={c.slug} delay={i * 110}>
+                <ResourceCard r={c} />
+              </Reveal>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function ResourceCard({ r }: { r: ResourceMeta }) {
+  return (
+    <Link
+      href={`/resources/${r.slug}`}
+      className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-20px_rgba(0,0,0,0.25)]"
+    >
+      <div className="relative h-44 overflow-hidden bg-neutral-200">
+        {r.coverImage ? (
+          <Image
+            src={r.coverImage}
+            alt={r.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-neutral-700 to-neutral-950">
+            <Building2 className="size-12 text-white/30" aria-hidden />
+          </div>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col p-6">
+        {r.category && (
+          <span className="mb-3 self-start rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600">
+            {r.category}
+          </span>
+        )}
+        <h3 className="text-lg font-medium tracking-tight text-neutral-900 group-hover:text-neutral-600">
+          {r.title}
+        </h3>
+        {r.excerpt && <p className="mt-2 text-sm leading-relaxed text-neutral-600">{r.excerpt}</p>}
+        <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-neutral-900">
+          Read guide <ArrowUpRight className="size-4" aria-hidden />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+// Shown only if the API returns nothing.
+const FALLBACK_RESOURCES: ResourceMeta[] = [
+  { slug: "coming-soon", title: "Know your rights", category: "Guides", excerpt: "Resources are on the way.", coverImage: "/resources/r3.jpg" },
+  { slug: "coming-soon", title: "Free legal aid in India", category: "Guides", excerpt: "Resources are on the way.", coverImage: "/resources/r1.jpg" },
+  { slug: "coming-soon", title: "Filing an FIR", category: "Guides", excerpt: "Resources are on the way.", coverImage: "/resources/r4.jpg" },
+];
+
+/* ───────────────────────── Partners / trusted ───────────────────────── */
+function Partners() {
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-24">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <h2 className="text-2xl font-medium tracking-tight text-neutral-900 sm:text-3xl">
+            Trusted alongside India&apos;s legal-aid network
+          </h2>
+          <p className="mt-4 text-neutral-600">
+            We work hand in hand with authorities and NGOs to deliver dependable support.
+          </p>
+        </Reveal>
+
+        <Reveal className="mt-12">
+          <div className="marquee-mask overflow-hidden">
+            <div className="flex w-max animate-marquee gap-4">
+              {[...PARTNERS, ...PARTNERS].map((p, i) => (
+                <div
+                  key={`${p}-${i}`}
+                  className="flex h-16 min-w-44 items-center justify-center rounded-xl bg-[#f3f2ef] px-6 text-sm font-medium tracking-tight text-neutral-500 ring-1 ring-neutral-200"
+                >
+                  {p}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── Everything you need ───────────────────────── */
+function Everything() {
+  return (
+    <section style={{ backgroundColor: OFFWHITE }}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal variant="left" className="lg:sticky lg:top-28 lg:self-start">
+            <Eyebrow>Services</Eyebrow>
+            <h2 className="mt-6 text-3xl font-medium leading-tight tracking-tight text-neutral-900 sm:text-4xl">
+              Everything you need to stand up for your rights
+            </h2>
+            <TextGenerate
+              as="p"
+              className="mt-5 max-w-md text-neutral-600 leading-relaxed"
+              text="From everyday paperwork to complex disputes, our team helps you act with confidence — and we explain every step in plain language."
+            />
+          </Reveal>
+
+          <div className="space-y-4">
+            {SERVICES.map((s, i) => (
+              <Reveal key={s.title} delay={i * 80} variant="right">
+                <div className="flex items-start gap-4 rounded-2xl bg-neutral-950 p-6 text-white transition-transform duration-300 hover:translate-x-1">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-white/10 ring-1 ring-white/15">
+                    <Building2 className="size-5" aria-hidden />
+                  </span>
+                  <div>
+                    <h3 className="text-base font-semibold tracking-tight">{s.title}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-neutral-400">{s.body}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── Meet our expert team ───────────────────────── */
+function Team() {
+  return (
+    <section className="relative overflow-hidden bg-neutral-950 text-white">
+      <DarkTexture />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <Eyebrow dark>Team</Eyebrow>
+          <h2 className="mt-6 text-3xl font-medium tracking-tight sm:text-4xl">Meet our expert team</h2>
+          <p className="mt-5 text-neutral-400 leading-relaxed">
+            A team of dedicated volunteer lawyers with years of experience across a wide range of
+            practice areas — here to help you.
+          </p>
+        </Reveal>
+
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {EXPERTS.map((e, i) => (
+            <Reveal key={e.name} delay={i * 120} variant="up-lg">
+              <article className="group overflow-hidden rounded-3xl bg-neutral-900 ring-1 ring-white/10">
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <Image
+                    src={e.img}
+                    alt={e.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-neutral-950 to-transparent" aria-hidden />
+                  {e.linkedin && (
+                    <a
+                      href={e.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute right-4 top-4 grid size-10 place-items-center rounded-full bg-white/10 text-white backdrop-blur ring-1 ring-white/20 transition-colors hover:bg-white hover:text-neutral-900"
+                      aria-label={`${e.name} on LinkedIn`}
+                    >
+                      <LinkedInIcon className="size-4" />
+                    </a>
+                  )}
+                </div>
+                <div className="p-6">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">{e.role}</div>
+                  <h3 className="mt-1 text-xl font-semibold tracking-tight">{e.name}</h3>
+                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-400">{e.bio}</p>
+                </div>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── Testimonials ───────────────────────── */
+function Testimonials() {
+  const [idx, setIdx] = useState(0);
+  const n = TESTIMONIALS.length;
+  const go = (d: number) => setIdx((p) => (p + d + n) % n);
+
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <Eyebrow>Testimonials</Eyebrow>
+          <h2 className="mt-6 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl">
+            Trusted by people across communities
+          </h2>
+          <p className="mt-5 text-neutral-600">Real stories from the people we have stood beside.</p>
+        </Reveal>
+
+        <Reveal className="mt-12">
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={{ transform: `translateX(-${idx * 100}%)` }}
+            >
+              {TESTIMONIALS.map((tm) => (
+                <div key={tm.name} className="w-full shrink-0 px-2 sm:px-8">
+                  <figure className="mx-auto max-w-3xl rounded-3xl bg-[#f3f2ef] p-8 text-center ring-1 ring-neutral-200 sm:p-12">
+                    <Quote className="mx-auto size-9 text-neutral-300" aria-hidden />
+                    <blockquote className="mt-6 text-xl font-medium leading-relaxed tracking-tight text-neutral-900 sm:text-2xl">
+                      &ldquo;{tm.quote}&rdquo;
+                    </blockquote>
+                    <figcaption className="mt-8">
+                      <div className="text-sm font-semibold text-neutral-900">{tm.name}</div>
+                      <div className="text-sm text-neutral-500">{tm.role}</div>
+                    </figcaption>
+                  </figure>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8 flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              className="grid size-11 place-items-center rounded-full bg-white ring-1 ring-neutral-300 text-neutral-700 hover:bg-neutral-900 hover:text-white transition-colors"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="size-5" aria-hidden />
+            </button>
+            <div className="flex gap-1.5">
+              {TESTIMONIALS.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setIdx(i)}
+                  aria-label={`Go to testimonial ${i + 1}`}
+                  className={`h-2 rounded-full transition-all ${i === idx ? "w-6 bg-neutral-900" : "w-2 bg-neutral-300"}`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              className="grid size-11 place-items-center rounded-full bg-white ring-1 ring-neutral-300 text-neutral-700 hover:bg-neutral-900 hover:text-white transition-colors"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="size-5" aria-hidden />
+            </button>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── FAQ ───────────────────────── */
+function Faq() {
+  const [open, setOpen] = useState(0);
+  return (
+    <section style={{ backgroundColor: OFFWHITE }}>
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-20 sm:py-28">
+        <Reveal className="text-center">
+          <Eyebrow>Answers for your questions</Eyebrow>
+          <h2 className="mt-6 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl">
+            Frequently asked questions
+          </h2>
+        </Reveal>
+
+        <div className="mt-12 divide-y divide-neutral-200">
+          {FAQS.map((f, i) => {
+            const isOpen = open === i;
+            return (
+              <Reveal key={f.q} delay={i * 60}>
+                <div className="py-2">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(isOpen ? -1 : i)}
+                    aria-expanded={isOpen}
+                    className="flex w-full items-center gap-4 py-4 text-left"
+                  >
+                    <span
+                      className={`grid size-7 shrink-0 place-items-center rounded-full text-xs font-semibold transition-colors ${
+                        isOpen ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-700"
+                      }`}
+                    >
+                      {i + 1}
+                    </span>
+                    <span className="flex-1 text-base font-medium tracking-tight text-neutral-900">{f.q}</span>
+                    <span className="grid size-8 shrink-0 place-items-center rounded-full ring-1 ring-neutral-300 text-neutral-700">
+                      {isOpen ? <Minus className="size-4" aria-hidden /> : <Plus className="size-4" aria-hidden />}
+                    </span>
+                  </button>
+                  <div className={`accordion-panel ${isOpen ? "open" : ""}`}>
+                    <div>
+                      <p className="pb-5 pl-11 pr-12 text-sm leading-relaxed text-neutral-600">{f.a}</p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── Contact ───────────────────────── */
+function Contact() {
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setSending(true);
+    setError(null);
+    try {
+      await api("/contact", {
+        method: "POST",
+        body: {
+          name: form.name,
+          email: form.email,
+          subject: form.subject || undefined,
+          message: form.message,
+        },
+      });
+      setSent(true);
+    } catch {
+      setError("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  const field =
+    "w-full border-0 border-b border-neutral-300 bg-transparent py-2.5 text-[15px] text-neutral-900 outline-none placeholder:text-neutral-400 focus:border-neutral-900 transition-colors";
+
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal variant="left">
+            <Eyebrow>Don&apos;t be shy</Eyebrow>
+            <h2 className="mt-6 text-4xl font-medium tracking-tight text-neutral-900 sm:text-5xl">Reach out</h2>
+            <p className="mt-5 max-w-md text-neutral-600 leading-relaxed">
+              Have a question or need help? Send us a message and a volunteer will get back to you
+              within 24 hours.
+            </p>
+            <div className="mt-10 space-y-5">
+              <ContactRow icon={<Phone className="size-5" aria-hidden />} value={CONTACT.phone} />
+              <ContactRow icon={<Mail className="size-5" aria-hidden />} value={CONTACT.email} />
+              <ContactRow icon={<MapPin className="size-5" aria-hidden />} value={CONTACT.address} />
+            </div>
+          </Reveal>
+
+          <Reveal variant="right" delay={100}>
+            <div className="rounded-3xl bg-[#f3f2ef] p-7 ring-1 ring-neutral-200 sm:p-9">
+              {sent ? (
+                <div className="flex h-full min-h-72 flex-col items-center justify-center text-center">
+                  <CheckCircle2 className="size-12 text-neutral-900" aria-hidden />
+                  <h3 className="mt-4 text-xl font-medium tracking-tight text-neutral-900">Message sent</h3>
+                  <p className="mt-2 text-sm text-neutral-600">
+                    Thank you, {form.name || "friend"}. We&apos;ll be in touch within 24 hours.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={submit} className="grid gap-6">
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <label className="block">
+                      <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Name</span>
+                      <input
+                        required
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        placeholder="Enter name"
+                        className={field}
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Email</span>
+                      <input
+                        required
+                        type="email"
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        placeholder="you@email.com"
+                        className={field}
+                      />
+                    </label>
+                  </div>
+                  <label className="block">
+                    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Subject</span>
+                    <input
+                      value={form.subject}
+                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                      placeholder="How can we help?"
+                      className={field}
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Message</span>
+                    <textarea
+                      required
+                      rows={3}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      placeholder="Enter message…"
+                      className={`${field} resize-none`}
+                    />
+                  </label>
+                  {error && (
+                    <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+                      {error}
+                    </p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={sending}
+                    className="group inline-flex items-center justify-center gap-2 rounded-full bg-neutral-900 px-6 py-3.5 text-sm font-semibold text-white hover:bg-neutral-700 disabled:opacity-60"
+                  >
+                    {sending ? "Sending…" : "Send message"}
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                  </button>
+                </form>
+              )}
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ContactRow({ icon, value }: { icon: React.ReactNode; value: string }) {
+  return (
+    <div className="flex items-center gap-4">
+      <span className="grid size-11 shrink-0 place-items-center rounded-full bg-neutral-900 text-white">{icon}</span>
+      <span className="text-[15px] text-neutral-800">{value}</span>
+    </div>
+  );
+}
+
+/* ───────────────────────── CTA card ───────────────────────── */
+function CtaCard() {
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-20 sm:pb-28">
+        <Reveal variant="scale">
+          <div className="relative overflow-hidden rounded-3xl bg-neutral-950 px-6 py-12 sm:px-12 sm:py-14">
+            <div
+              className="pointer-events-none absolute -right-10 top-0 h-full w-1/2 opacity-30"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(115deg, rgba(255,255,255,0.18) 0, rgba(255,255,255,0.18) 1px, transparent 1px, transparent 14px)",
+              }}
+              aria-hidden
+            />
+            <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-5">
+                <span className="grid size-14 shrink-0 place-items-center rounded-full bg-white text-neutral-900">
+                  <Gavel className="size-6" aria-hidden />
+                </span>
+                <div>
+                  <h2 className="text-2xl font-medium tracking-tight text-white sm:text-3xl">
+                    Schedule a free legal consultation
+                  </h2>
+                  <p className="mt-2 max-w-md text-sm leading-relaxed text-neutral-400">
+                    Discuss your situation with an experienced volunteer. Get clear guidance on your
+                    rights and options — no cost, no obligation.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/book"
+                className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-neutral-900 hover:bg-neutral-200"
+              >
+                Schedule now
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+              </Link>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
   );
 }

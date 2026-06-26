@@ -1,39 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Brand: navy ── */
-  --color-navy-50: #eef2f7;
-  --color-navy-100: #d3dded;
-  --color-navy-200: #9fb3d1;
-  --color-navy-400: #41618f;
-  --color-navy-600: #14395f;
-  --color-navy-800: #0a2540;
-  --color-navy-900: #071a2e;
+  /* ── Monochrome theme (legacy "navy" tokens remapped to neutral/near-black) ── */
+  --color-navy-50: #f5f5f4;
+  --color-navy-100: #e7e5e4;
+  --color-navy-200: #a8a29e;
+  --color-navy-400: #57534e;
+  --color-navy-600: #292524;
+  --color-navy-800: #0c0a09;
+  --color-navy-900: #000000;
 
-  /* ── Brand: green ── */
-  --color-brand-50: #e8f6f0;
-  --color-brand-100: #c7e9da;
-  --color-brand-300: #6ec6a3;
-  --color-brand-500: #1d9e75;
-  --color-brand-600: #178a64;
-  --color-brand-700: #0f6e4f;
+  /* ── Accent (legacy "brand" green remapped to mono black) ── */
+  --color-brand-50: #f5f5f4;
+  --color-brand-100: #e7e5e4;
+  --color-brand-300: #a8a29e;
+  --color-brand-500: #0c0a09;
+  --color-brand-600: #292524;
+  --color-brand-700: #44403c;
 
-  /* ── Neutrals (slate) ── */
-  --color-ink: #0f172a;
-  --color-muted: #64748b;
-  --color-line: #e2e8f0;
+  /* ── Neutrals ── */
+  --color-ink: #1c1917;
+  --color-muted: #78716c;
+  --color-line: #e7e5e4;
   --color-surface: #ffffff;
-  --color-canvas: #f7f9fc;
+  --color-canvas: #f4f3f1;
 
   /* ── Semantic ── */
   --color-danger: #dc2626;
   --color-warning: #d97706;
-  --color-success: #1d9e75;
+  --color-success: #16a34a;
 
-  /* ── Fonts ── */
-  --font-display: var(--font-fraunces), Georgia, serif;
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-telugu: var(--font-telugu), var(--font-inter), sans-serif;
+  /* ── Fonts (whole app uses the grotesk now) ── */
+  --font-grotesk: var(--font-geist), var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-grotesk);
+  --font-sans: var(--font-grotesk);
+  --font-telugu: var(--font-telugu), var(--font-geist), sans-serif;
 
   /* ── Radius ── */
   --radius-lg: 0.625rem;
@@ -99,3 +100,63 @@ button:disabled,
 
 /* Tabular figures for data/timers/refs */
 .tabular { font-variant-numeric: tabular-nums; }
+
+/* ── Scroll-reveal (IntersectionObserver toggles .is-visible) ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.reveal-left { transform: translateX(-26px); }
+.reveal-right { transform: translateX(26px); }
+.reveal-scale { transform: scale(0.96); }
+.reveal-up-lg { transform: translateY(70px); }
+.reveal-left.is-visible,
+.reveal-right.is-visible,
+.reveal-scale.is-visible,
+.reveal-up-lg.is-visible { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── FAQ accordion height animation ── */
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.accordion-panel.open {
+  grid-template-rows: 1fr;
+}
+.accordion-panel > div {
+  overflow: hidden;
+}
+
+/* ── Marquee (logo / partner strip) ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}

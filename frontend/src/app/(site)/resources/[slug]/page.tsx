@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
 import type { Metadata } from "next";
 import { API_URL } from "@/lib/api";
 import { Container } from "@/components/ui";
@@ -11,6 +11,7 @@ interface Post {
   category?: string | null;
   excerpt?: string | null;
   body: string;
+  coverImage?: string | null;
   createdAt: string;
 }
 
@@ -44,34 +45,62 @@ export default async function ArticlePage({
 }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) notFound();
+
+  if (!post) {
+    return (
+      <Container className="py-16 sm:py-24">
+        <div className="mx-auto max-w-md rounded-3xl bg-[#f3f2ef] p-10 text-center ring-1 ring-neutral-200">
+          <span className="mx-auto grid size-14 place-items-center rounded-full bg-neutral-900 text-white">
+            <Clock className="size-7" aria-hidden />
+          </span>
+          <h1 className="mt-5 text-2xl font-medium tracking-tight text-neutral-900">Coming soon</h1>
+          <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+            This guide is being written by our volunteer lawyers. Check back shortly — or reach out
+            and we&apos;ll help you directly.
+          </p>
+          <Link
+            href="/resources"
+            className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-neutral-700"
+          >
+            <ArrowLeft className="size-4" aria-hidden />
+            Back to resources
+          </Link>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container className="py-10 sm:py-14">
       <article className="mx-auto max-w-2xl">
         <Link
           href="/resources"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-navy-800"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-neutral-900"
         >
           <ArrowLeft className="size-4" aria-hidden />
           All resources
         </Link>
+        {post.coverImage && (
+          <div className="relative mt-5 aspect-[16/9] overflow-hidden rounded-2xl ring-1 ring-neutral-200">
+            <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 768px) 100vw, 672px" className="object-cover" />
+          </div>
+        )}
         {post.category && (
-          <span className="mt-4 inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-600/20">
+          <span className="mt-6 inline-block rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600">
             {post.category}
           </span>
         )}
-        <h1 className="mt-3 font-display text-3xl font-semibold leading-tight text-navy-800 sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-medium leading-tight tracking-tight text-neutral-900 sm:text-4xl">
           {post.title}
         </h1>
-        <p className="mt-2 text-sm text-muted">
+        <p className="mt-2 text-sm text-neutral-500">
           {new Date(post.createdAt).toLocaleDateString(undefined, {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}
         </p>
-        <div className="mt-8 whitespace-pre-wrap text-[17px] leading-relaxed text-ink">
+        <div className="mt-8 whitespace-pre-wrap text-[17px] leading-relaxed text-neutral-800">
           {post.body}
         </div>
       </article>

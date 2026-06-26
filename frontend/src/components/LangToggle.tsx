@@ -9,7 +9,7 @@ export function LangToggle({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={() => setLang(lang === "en" ? "te" : "en")}
-      className={`inline-flex items-center gap-1.5 rounded-lg min-h-9 px-3 text-sm font-medium text-navy-100 hover:bg-white/10 transition-colors ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full min-h-9 px-3 text-sm font-medium text-neutral-700 ring-1 ring-neutral-300 hover:text-neutral-900 hover:bg-neutral-900/5 transition-colors ${className}`}
       aria-label={`Switch language to ${lang === "en" ? "Telugu" : "English"}`}
     >
       <Languages className="size-4" aria-hidden />

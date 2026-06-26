@@ -23,6 +23,7 @@ class CreatePostDto {
   @IsOptional() @IsString() @MaxLength(60) category?: string;
   @IsOptional() @IsString() @MaxLength(300) excerpt?: string;
   @IsString() @MinLength(10) body!: string;
+  @IsOptional() @IsString() @MaxLength(500) coverImage?: string;
   @IsOptional() @IsBoolean() published?: boolean;
 }
 
@@ -31,6 +32,7 @@ class UpdatePostDto {
   @IsOptional() @IsString() @MaxLength(60) category?: string;
   @IsOptional() @IsString() @MaxLength(300) excerpt?: string;
   @IsOptional() @IsString() @MinLength(10) body?: string;
+  @IsOptional() @IsString() @MaxLength(500) coverImage?: string;
   @IsOptional() @IsBoolean() published?: boolean;
 }
 

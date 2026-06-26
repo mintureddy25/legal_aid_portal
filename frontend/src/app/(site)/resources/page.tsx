@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
@@ -12,6 +13,7 @@ interface PostMeta {
   title: string;
   category?: string | null;
   excerpt?: string | null;
+  coverImage?: string | null;
   createdAt: string;
 }
 
@@ -53,21 +55,34 @@ export default function ResourcesPage() {
           <Link
             key={p.slug}
             href={`/resources/${p.slug}`}
-            className="group flex flex-col rounded-2xl bg-surface p-5 ring-1 ring-line transition-all hover:-translate-y-0.5 hover:shadow-md hover:ring-brand-300"
+            className="group flex flex-col overflow-hidden rounded-2xl bg-surface ring-1 ring-line transition-all hover:-translate-y-0.5 hover:shadow-md"
           >
-            {p.category && (
-              <Badge className="mb-3 self-start bg-brand-50 text-brand-700 ring-brand-600/20">
-                {p.category}
-              </Badge>
+            {p.coverImage && (
+              <div className="relative h-44 overflow-hidden bg-neutral-200">
+                <Image
+                  src={p.coverImage}
+                  alt={p.title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
             )}
-            <h2 className="font-display text-lg font-semibold text-navy-800 group-hover:text-brand-600">
-              {p.title}
-            </h2>
-            {p.excerpt && <p className="mt-2 line-clamp-3 text-sm text-muted">{p.excerpt}</p>}
-            <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600">
-              {t("res.read")}
-              <ArrowUpRight className="size-4" aria-hidden />
-            </span>
+            <div className="flex flex-1 flex-col p-5">
+              {p.category && (
+                <Badge className="mb-3 self-start bg-neutral-100 text-neutral-700 ring-neutral-300">
+                  {p.category}
+                </Badge>
+              )}
+              <h2 className="text-lg font-medium tracking-tight text-ink group-hover:text-muted">
+                {p.title}
+              </h2>
+              {p.excerpt && <p className="mt-2 line-clamp-3 text-sm text-muted">{p.excerpt}</p>}
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-ink">
+                {t("res.read")}
+                <ArrowUpRight className="size-4" aria-hidden />
+              </span>
+            </div>
           </Link>
         ))}
       </div>
