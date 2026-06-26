@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Plus, Trash2, CalendarClock } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAdminAuth } from "@/lib/adminAuth";
-import { Badge, Button, Field, inputClass } from "@/components/ui";
+import { Badge, Button, Field, inputClass, LoadingState, Pagination, Spinner } from "@/components/ui";
 
 interface Slot {
   id: string;
@@ -14,12 +14,18 @@ interface Slot {
   appointment: { name: string; phone: string } | null;
 }
 
+type SlotFilter = "all" | "open" | "booked";
+const SLOTS_PER_PAGE = 12;
+
 export default function AdminSlots() {
   const { token } = useAdminAuth();
-  const [slots, setSlots] = useState<Slot[]>([]);
+  const [slots, setSlots] = useState<Slot[] | null>(null);
   const [datetime, setDatetime] = useState("");
   const [duration, setDuration] = useState(15);
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<SlotFilter>("all");
+  const [page, setPage] = useState(1);
 
   const load = useCallback(async () => {
     if (token) setSlots(await api<Slot[]>("/appointments/admin/slots", { token }));
@@ -28,6 +34,24 @@ export default function AdminSlots() {
   useEffect(() => {
     load();
   }, [load]);
+
+  function selectFilter(f: SlotFilter) {
+    setStatusFilter(f);
+    setPage(1);
+  }
+
+  const filtered = useMemo(() => {
+    if (!slots) return [];
+    if (statusFilter === "open") return slots.filter((s) => !s.isBooked);
+    if (statusFilter === "booked") return slots.filter((s) => s.isBooked);
+    return slots;
+  }, [slots, statusFilter]);
+
+  const totalPages = Math.ceil(filtered.length / SLOTS_PER_PAGE) || 1;
+  const pageSlots = useMemo(
+    () => filtered.slice((page - 1) * SLOTS_PER_PAGE, page * SLOTS_PER_PAGE),
+    [filtered, page],
+  );
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
@@ -44,8 +68,13 @@ export default function AdminSlots() {
   }
 
   async function remove(id: string) {
-    await api(`/appointments/admin/slots/${id}`, { method: "DELETE", token });
-    await load();
+    setDeletingId(id);
+    try {
+      await api(`/appointments/admin/slots/${id}`, { method: "DELETE", token });
+      await load();
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   return (
@@ -80,14 +109,40 @@ export default function AdminSlots() {
         </Button>
       </form>
 
-      <div className="mt-6 grid gap-2">
-        {slots.length === 0 && (
+      {/* Status filter */}
+      <div className="mt-6 flex items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Filter slots by status">
+          {(["all", "open", "booked"] as const).map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => selectFilter(f)}
+              aria-pressed={statusFilter === f}
+              className={`min-h-9 rounded-lg px-3 text-sm font-medium capitalize ring-1 ring-inset transition-colors ${
+                statusFilter === f
+                  ? "bg-navy-800 text-white ring-navy-800"
+                  : "bg-white text-ink ring-line hover:ring-navy-400"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        {slots && (
+          <span className="text-xs text-muted tabular">{filtered.length} slots</span>
+        )}
+      </div>
+
+      {slots === null && <LoadingState label="Loading slots…" />}
+
+      <div className="mt-4 grid gap-2">
+        {slots && filtered.length === 0 && (
           <p className="rounded-2xl bg-surface p-10 text-center text-sm text-muted ring-1 ring-line">
             <CalendarClock className="mx-auto mb-2 size-7 text-slate-300" aria-hidden />
-            No slots yet.
+            No slots match this filter.
           </p>
         )}
-        {slots.map((s) => (
+        {pageSlots.map((s) => (
           <div key={s.id} className="flex items-center justify-between rounded-xl bg-surface p-4 ring-1 ring-line">
             <div>
               <div className="font-medium text-ink tabular">
@@ -114,10 +169,15 @@ export default function AdminSlots() {
                   <Badge className="bg-slate-100 text-slate-600 ring-slate-500/20">Open</Badge>
                   <button
                     onClick={() => remove(s.id)}
-                    className="grid size-9 place-items-center rounded-lg text-muted hover:bg-red-50 hover:text-red-600"
+                    disabled={deletingId === s.id}
+                    className="grid size-9 place-items-center rounded-lg text-muted hover:bg-red-50 hover:text-red-600 disabled:opacity-50 disabled:pointer-events-none"
                     aria-label="Delete slot"
                   >
-                    <Trash2 className="size-4" aria-hidden />
+                    {deletingId === s.id ? (
+                      <Spinner className="size-4" />
+                    ) : (
+                      <Trash2 className="size-4" aria-hidden />
+                    )}
                   </button>
                 </>
               )}
@@ -125,6 +185,8 @@ export default function AdminSlots() {
           </div>
         ))}
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} className="mt-6" />
     </div>
   );
 }

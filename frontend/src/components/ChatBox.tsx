@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Lock } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { useChat } from "@/lib/useChat";
 
@@ -14,22 +14,24 @@ export function ChatBox({
   token,
   caseId,
   me,
+  closed = false,
   className = "",
 }: {
   reference?: string;
   token?: string;
   caseId?: string;
   me: "CLIENT" | "LAWYER";
+  closed?: boolean;
   className?: string;
 }) {
   const { t } = useI18n();
-  const { messages, status, error, peerTyping, send, notifyTyping } = useChat({
-    reference,
-    token,
-    caseId,
-  });
+  const { messages, status, error, peerTyping, send, notifyTyping, caseStatus, loadingHistory } =
+    useChat({ reference, token, caseId });
   const [text, setText] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Closed via the prop (caller already knows) or detected from the live case status.
+  const isClosed = closed || caseStatus === "CLOSED";
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -37,7 +39,7 @@ export function ChatBox({
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!text.trim()) return;
+    if (!text.trim() || isClosed) return;
     send(text);
     setText("");
   }
@@ -58,7 +60,13 @@ export function ChatBox({
         {status === "error" && (
           <div className="rounded-lg bg-red-50 p-3 text-center text-sm text-red-700">{error}</div>
         )}
-        {status === "ready" && messages.length === 0 && (
+        {status === "ready" && loadingHistory && (
+          <div className="flex items-center justify-center gap-2 py-8 text-sm text-muted">
+            <Loader2 className="size-4 animate-spin" aria-hidden />
+            {t("chat.loading")}
+          </div>
+        )}
+        {status === "ready" && !loadingHistory && messages.length === 0 && (
           <p className="py-8 text-center text-sm text-muted">{t("chat.empty")}</p>
         )}
         {messages.map((m) => {
@@ -94,27 +102,34 @@ export function ChatBox({
         )}
       </div>
 
-      <form onSubmit={submit} className="flex items-center gap-2 border-t border-line bg-white p-3">
-        <input
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            notifyTyping();
-          }}
-          placeholder={t("chat.placeholder")}
-          aria-label={t("chat.placeholder")}
-          disabled={status !== "ready"}
-          className="min-h-11 flex-1 rounded-lg bg-canvas px-3.5 text-[15px] outline-none ring-1 ring-inset ring-line focus:ring-2 focus:ring-brand-500 disabled:opacity-50"
-        />
-        <button
-          type="submit"
-          disabled={status !== "ready" || !text.trim()}
-          className="grid size-11 shrink-0 place-items-center rounded-lg bg-brand-500 text-white hover:bg-brand-600 disabled:opacity-40 [touch-action:manipulation]"
-          aria-label={t("chat.send")}
-        >
-          <Send className="size-5" aria-hidden />
-        </button>
-      </form>
+      {isClosed ? (
+        <div className="flex items-center justify-center gap-2 border-t border-line bg-slate-50 p-4 text-center text-sm text-muted">
+          <Lock className="size-4 shrink-0" aria-hidden />
+          {t("chat.closed")}
+        </div>
+      ) : (
+        <form onSubmit={submit} className="flex items-center gap-2 border-t border-line bg-white p-3">
+          <input
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              notifyTyping();
+            }}
+            placeholder={t("chat.placeholder")}
+            aria-label={t("chat.placeholder")}
+            disabled={status !== "ready"}
+            className="min-h-11 flex-1 rounded-lg bg-canvas px-3.5 text-[15px] outline-none ring-1 ring-inset ring-line focus:ring-2 focus:ring-brand-500 disabled:opacity-50"
+          />
+          <button
+            type="submit"
+            disabled={status !== "ready" || !text.trim()}
+            className="grid size-11 shrink-0 place-items-center rounded-lg bg-brand-500 text-white hover:bg-brand-600 disabled:opacity-40 [touch-action:manipulation]"
+            aria-label={t("chat.send")}
+          >
+            <Send className="size-5" aria-hidden />
+          </button>
+        </form>
+      )}
     </div>
   );
 }

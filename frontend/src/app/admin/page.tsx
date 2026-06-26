@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, Download, MessageSquare } from "lucide-react";
 import { api, API_URL } from "@/lib/api";
@@ -14,7 +14,9 @@ import {
   type Status,
   type Urgency,
 } from "@/lib/constants";
-import { Badge } from "@/components/ui";
+import { Badge, LoadingState, Pagination } from "@/components/ui";
+
+const CASES_PER_PAGE = 10;
 
 interface CaseRow {
   id: string;
@@ -41,6 +43,7 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [rows, setRows] = useState<CaseRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({ q: "", status: "", category: "", urgency: "" });
 
   const qs = useCallback(() => {
@@ -65,6 +68,18 @@ export default function AdminDashboard() {
     const id = setTimeout(load, 250);
     return () => clearTimeout(id);
   }, [load]);
+
+  // Filters change the result set, so jump back to the first page.
+  function setFilter(patch: Partial<typeof filters>) {
+    setFilters((prev) => ({ ...prev, ...patch }));
+    setPage(1);
+  }
+
+  const totalPages = Math.ceil(rows.length / CASES_PER_PAGE) || 1;
+  const pageRows = useMemo(
+    () => rows.slice((page - 1) * CASES_PER_PAGE, page * CASES_PER_PAGE),
+    [rows, page],
+  );
 
   async function exportCsv() {
     const res = await fetch(`${API_URL}/admin/cases/export?${qs()}`, {
@@ -119,14 +134,14 @@ export default function AdminDashboard() {
             placeholder="Search name, phone, reference…"
             className="min-h-10 w-full rounded-lg bg-white pl-9 pr-3 text-sm ring-1 ring-inset ring-line outline-none focus:ring-2 focus:ring-brand-500"
             value={filters.q}
-            onChange={(e) => setFilters({ ...filters, q: e.target.value })}
+            onChange={(e) => setFilter({ q: e.target.value })}
             aria-label="Search cases"
           />
         </div>
         <select
           className="min-h-10 rounded-lg bg-white px-3 text-sm ring-1 ring-inset ring-line"
           value={filters.status}
-          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          onChange={(e) => setFilter({ status: e.target.value })}
           aria-label="Filter by status"
         >
           <option value="">All statuses</option>
@@ -137,7 +152,7 @@ export default function AdminDashboard() {
         <select
           className="min-h-10 rounded-lg bg-white px-3 text-sm ring-1 ring-inset ring-line"
           value={filters.category}
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+          onChange={(e) => setFilter({ category: e.target.value })}
           aria-label="Filter by category"
         >
           <option value="">All categories</option>
@@ -148,7 +163,7 @@ export default function AdminDashboard() {
         <select
           className="min-h-10 rounded-lg bg-white px-3 text-sm ring-1 ring-inset ring-line"
           value={filters.urgency}
-          onChange={(e) => setFilters({ ...filters, urgency: e.target.value })}
+          onChange={(e) => setFilter({ urgency: e.target.value })}
           aria-label="Filter by urgency"
         >
           <option value="">All urgency</option>
@@ -158,6 +173,10 @@ export default function AdminDashboard() {
         </select>
       </div>
 
+      {loading && <LoadingState label="Loading cases…" />}
+
+      {!loading && (
+      <>
       {/* Table (desktop) */}
       <div className="mt-4 hidden overflow-hidden rounded-2xl bg-surface ring-1 ring-line md:block">
         <table className="w-full text-sm">
@@ -173,7 +192,7 @@ export default function AdminDashboard() {
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
-            {rows.map((r) => (
+            {pageRows.map((r) => (
               <tr key={r.id} className="hover:bg-canvas">
                 <td className="px-4 py-3">
                   <Link href={`/admin/cases/${r.id}`} className="font-medium text-navy-800 tabular hover:text-brand-600">
@@ -197,14 +216,14 @@ export default function AdminDashboard() {
             ))}
           </tbody>
         </table>
-        {!loading && rows.length === 0 && (
+        {rows.length === 0 && (
           <p className="px-4 py-10 text-center text-sm text-muted">No cases match these filters.</p>
         )}
       </div>
 
       {/* Cards (mobile) */}
       <div className="mt-4 grid gap-3 md:hidden">
-        {rows.map((r) => (
+        {pageRows.map((r) => (
           <Link
             key={r.id}
             href={`/admin/cases/${r.id}`}
@@ -221,10 +240,14 @@ export default function AdminDashboard() {
             </div>
           </Link>
         ))}
-        {!loading && rows.length === 0 && (
+        {rows.length === 0 && (
           <p className="py-10 text-center text-sm text-muted">No cases match these filters.</p>
         )}
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} className="mt-6" />
+      </>
+      )}
     </div>
   );
 }

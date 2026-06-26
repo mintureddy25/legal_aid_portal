@@ -124,6 +124,8 @@ const en: Dict = {
   "chat.empty": "No messages yet. Say hello and a volunteer will reply here.",
   "chat.you": "You",
   "chat.volunteer": "Volunteer",
+  "chat.loading": "Loading messages…",
+  "chat.closed": "This case is closed — live chat is no longer available.",
 
   // resources
   "res.title": "Legal resources",
@@ -131,6 +133,7 @@ const en: Dict = {
   "res.empty": "Articles are coming soon. Check back shortly.",
   "res.read": "Read guide",
   "res.back": "All resources",
+  "res.loading": "Loading resources…",
 
   // booking
   "book.title": "Book a free consultation",
@@ -139,6 +142,10 @@ const en: Dict = {
   "book.confirm": "Confirm booking",
   "book.booked": "Your consultation is booked. Check your email for details.",
   "book.reason": "What's it about? (optional)",
+  "book.loading": "Loading slots…",
+  "book.bookThis": "Book this slot",
+  "book.selected": "Selected slot",
+  "book.change": "Change",
 };
 
 const te: Dict = {
@@ -250,12 +257,15 @@ const te: Dict = {
   "chat.empty": "ఇంకా సందేశాలు లేవు. హలో చెప్పండి, వాలంటీర్ ఇక్కడ సమాధానం ఇస్తారు.",
   "chat.you": "మీరు",
   "chat.volunteer": "వాలంటీర్",
+  "chat.loading": "సందేశాలు లోడ్ అవుతున్నాయి…",
+  "chat.closed": "ఈ కేసు ముగిసింది — లైవ్ చాట్ ఇకపై అందుబాటులో లేదు.",
 
   "res.title": "న్యాయ వనరులు",
   "res.subtitle": "సాధారణ న్యాయ ప్రశ్నలకు సరళమైన గైడ్‌లు.",
   "res.empty": "వ్యాసాలు త్వరలో వస్తాయి. కొద్దిసేపటికి తిరిగి చూడండి.",
   "res.read": "గైడ్ చదవండి",
   "res.back": "అన్ని వనరులు",
+  "res.loading": "వనరులు లోడ్ అవుతున్నాయి…",
 
   "book.title": "ఉచిత సంప్రదింపు బుక్ చేయండి",
   "book.subtitle": "15 నిమిషాల స్లాట్ ఎంచుకోండి, మేం కాల్ చేస్తాం.",
@@ -263,6 +273,10 @@ const te: Dict = {
   "book.confirm": "బుకింగ్ నిర్ధారించండి",
   "book.booked": "మీ సంప్రదింపు బుక్ అయింది. వివరాల కోసం ఇమెయిల్ చూడండి.",
   "book.reason": "ఇది దేని గురించి? (ఐచ్ఛికం)",
+  "book.loading": "స్లాట్‌లు లోడ్ అవుతున్నాయి…",
+  "book.bookThis": "ఈ స్లాట్ బుక్ చేయండి",
+  "book.selected": "ఎంచుకున్న స్లాట్",
+  "book.change": "మార్చండి",
 };
 
 const dicts: Record<Lang, Dict> = { en, te };

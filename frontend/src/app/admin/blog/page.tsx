@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Eye, EyeOff } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAdminAuth } from "@/lib/adminAuth";
-import { Badge } from "@/components/ui";
+import { Badge, LoadingState, Pagination } from "@/components/ui";
 
 interface Post {
   id: string;
@@ -16,13 +16,22 @@ interface Post {
   updatedAt: string;
 }
 
+const POSTS_PER_PAGE = 10;
+
 export default function AdminBlog() {
   const { token } = useAdminAuth();
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    if (token) api<Post[]>("/blog/admin/all", { token }).then(setPosts);
+    if (token) api<Post[]>("/blog/admin/all", { token }).then(setPosts).catch(() => setPosts([]));
   }, [token]);
+
+  const totalPages = posts ? Math.ceil(posts.length / POSTS_PER_PAGE) || 1 : 1;
+  const pagePosts = useMemo(
+    () => (posts ? posts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE) : []),
+    [posts, page],
+  );
 
   return (
     <div>
@@ -37,13 +46,15 @@ export default function AdminBlog() {
         </Link>
       </div>
 
+      {posts === null && <LoadingState label="Loading resources…" />}
+
       <div className="mt-6 grid gap-3">
-        {posts.length === 0 && (
+        {posts && posts.length === 0 && (
           <p className="rounded-2xl bg-surface p-10 text-center text-sm text-muted ring-1 ring-line">
             No articles yet. Create your first guide.
           </p>
         )}
-        {posts.map((p) => (
+        {pagePosts.map((p) => (
           <Link
             key={p.id}
             href={`/admin/blog/${p.id}`}
@@ -70,6 +81,8 @@ export default function AdminBlog() {
           </Link>
         ))}
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} className="mt-6" />
     </div>
   );
 }

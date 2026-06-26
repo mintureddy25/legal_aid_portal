@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { api } from "@/lib/api";
-import { Container, Badge } from "@/components/ui";
+import { Container, Badge, LoadingState, Pagination } from "@/components/ui";
 
 interface PostMeta {
   slug: string;
@@ -15,13 +15,22 @@ interface PostMeta {
   createdAt: string;
 }
 
+const POSTS_PER_PAGE = 9;
+
 export default function ResourcesPage() {
   const { t } = useI18n();
   const [posts, setPosts] = useState<PostMeta[] | null>(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     api<PostMeta[]>("/blog").then(setPosts).catch(() => setPosts([]));
   }, []);
+
+  const totalPages = posts ? Math.ceil(posts.length / POSTS_PER_PAGE) : 1;
+  const pagePosts = useMemo(
+    () => (posts ? posts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE) : []),
+    [posts, page],
+  );
 
   return (
     <Container className="py-10 sm:py-14">
@@ -29,6 +38,8 @@ export default function ResourcesPage() {
         {t("res.title")}
       </h1>
       <p className="mt-2 text-muted">{t("res.subtitle")}</p>
+
+      {posts === null && <LoadingState label={t("res.loading")} />}
 
       {posts && posts.length === 0 && (
         <div className="mt-10 rounded-2xl bg-surface p-10 text-center ring-1 ring-line">
@@ -38,7 +49,7 @@ export default function ResourcesPage() {
       )}
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {posts?.map((p) => (
+        {pagePosts.map((p) => (
           <Link
             key={p.slug}
             href={`/resources/${p.slug}`}
@@ -60,6 +71,8 @@ export default function ResourcesPage() {
           </Link>
         ))}
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} className="mt-8" />
     </Container>
   );
 }

@@ -6,7 +6,7 @@ import { ArrowLeft, Phone, Mail, MapPin } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAdminAuth } from "@/lib/adminAuth";
 import { STATUSES, STATUS_STYLE, URGENCY_STYLE, type Status, type Urgency } from "@/lib/constants";
-import { Badge, Button } from "@/components/ui";
+import { Badge, Button, LoadingState, Spinner } from "@/components/ui";
 import { ChatBox } from "@/components/ChatBox";
 
 interface Note {
@@ -41,7 +41,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
   const [c, setC] = useState<CaseDetail | null>(null);
   const [note, setNote] = useState("");
   const [savingNote, setSavingNote] = useState(false);
-  const [savingStatus, setSavingStatus] = useState(false);
+  const [savingStatusTo, setSavingStatusTo] = useState<Status | null>(null);
 
   const load = useCallback(async () => {
     if (!token) return;
@@ -53,10 +53,13 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
   }, [load]);
 
   async function updateStatus(status: Status) {
-    setSavingStatus(true);
-    await api(`/admin/cases/${id}/status`, { method: "PATCH", body: { status }, token });
-    await load();
-    setSavingStatus(false);
+    setSavingStatusTo(status);
+    try {
+      await api(`/admin/cases/${id}/status`, { method: "PATCH", body: { status }, token });
+      await load();
+    } finally {
+      setSavingStatusTo(null);
+    }
   }
 
   async function addNote(e: React.FormEvent) {
@@ -69,7 +72,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
     setSavingNote(false);
   }
 
-  if (!c) return <div className="text-sm text-muted">Loading…</div>;
+  if (!c) return <LoadingState label="Loading case…" />;
 
   return (
     <div>
@@ -95,13 +98,14 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                 <button
                   key={s}
                   onClick={() => updateStatus(s)}
-                  disabled={savingStatus || c.status === s}
-                  className={`min-h-10 rounded-lg px-4 text-sm font-medium ring-1 transition-colors ${
+                  disabled={savingStatusTo !== null || c.status === s}
+                  className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-4 text-sm font-medium ring-1 transition-colors disabled:opacity-60 ${
                     c.status === s
                       ? "bg-navy-800 text-white ring-navy-800"
                       : "bg-white text-ink ring-line hover:ring-navy-400"
                   }`}
                 >
+                  {savingStatusTo === s && <Spinner className="size-4" />}
                   {s.replace("_", " ")}
                 </button>
               ))}
@@ -174,7 +178,13 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
         {/* Right: live chat with the client */}
         <div className="lg:sticky lg:top-6 lg:self-start">
           <h2 className="mb-2 text-sm font-semibold text-ink">Live chat with client</h2>
-          <ChatBox token={token ?? undefined} caseId={c.id} me="LAWYER" className="h-[60vh] min-h-[420px]" />
+          <ChatBox
+            token={token ?? undefined}
+            caseId={c.id}
+            me="LAWYER"
+            closed={c.status === "CLOSED"}
+            className="h-[60vh] min-h-[420px]"
+          />
         </div>
       </div>
     </div>

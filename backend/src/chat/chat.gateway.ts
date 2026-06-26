@@ -121,6 +121,11 @@ export class ChatGateway implements OnGatewayConnection {
     }
     if (!caseId) return { error: 'no_case' };
 
+    // No live chat on closed cases — enforce server-side, not just in the UI.
+    const c = await this.chat.caseById(caseId);
+    if (!c) return { error: 'no_case' };
+    if (c.status === 'CLOSED') return { error: 'closed' };
+
     const msg = await this.chat.saveMessage(caseId, sender, text.slice(0, 4000));
     this.server.to(room(caseId)).emit('chat:message', msg);
     // Notify the lawyer inbox even if the lawyer hasn't opened this room.

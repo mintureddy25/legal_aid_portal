@@ -20,11 +20,17 @@ interface UseChatOpts {
 
 type Conn = "connecting" | "ready" | "error";
 
+interface CaseRef {
+  status?: string;
+}
+
 export function useChat({ reference, token, caseId }: UseChatOpts) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [status, setStatus] = useState<Conn>("connecting");
   const [error, setError] = useState<string | null>(null);
   const [peerTyping, setPeerTyping] = useState(false);
+  const [caseStatus, setCaseStatus] = useState<string | null>(null);
+  const [loadingHistory, setLoadingHistory] = useState(true);
   const socketRef = useRef<Socket | null>(null);
   const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -36,12 +42,20 @@ export function useChat({ reference, token, caseId }: UseChatOpts) {
     });
     socketRef.current = socket;
 
-    socket.on("chat:ready", (d: { history?: ChatMessage[] }) => {
+    socket.on("chat:ready", (d: { history?: ChatMessage[]; case?: CaseRef }) => {
       setStatus("ready");
+      if (d.case?.status) setCaseStatus(d.case.status);
       if (d.history) setMessages(d.history);
-      if (token && caseId) socket.emit("chat:open", { caseId }, (res: { history?: ChatMessage[] }) => {
-        if (res?.history) setMessages(res.history);
-      });
+      if (token && caseId) {
+        setLoadingHistory(true);
+        socket.emit("chat:open", { caseId }, (res: { history?: ChatMessage[]; case?: CaseRef }) => {
+          if (res?.case?.status) setCaseStatus(res.case.status);
+          if (res?.history) setMessages(res.history);
+          setLoadingHistory(false);
+        });
+      } else {
+        setLoadingHistory(false);
+      }
     });
     socket.on("chat:error", (d: { message: string }) => {
       setStatus("error");
@@ -81,5 +95,5 @@ export function useChat({ reference, token, caseId }: UseChatOpts) {
     socketRef.current?.emit("chat:typing", { caseId });
   }, [caseId]);
 
-  return { messages, status, error, peerTyping, send, notifyTyping };
+  return { messages, status, error, peerTyping, send, notifyTyping, caseStatus, loadingHistory };
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 
 export function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
@@ -103,3 +103,65 @@ export function Field({
 
 export const inputClass =
   "w-full min-h-11 rounded-lg bg-white px-3.5 text-[15px] text-ink ring-1 ring-inset ring-line placeholder:text-slate-400 focus:ring-2 focus:ring-brand-500 outline-none";
+
+export function Spinner({ className = "size-5" }: { className?: string }) {
+  return <Loader2 className={`animate-spin ${className}`} aria-hidden />;
+}
+
+/** Centered loading row for async sections. */
+export function LoadingState({ label = "Loading…", className = "" }: { label?: string; className?: string }) {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className={`flex items-center justify-center gap-2 py-12 text-sm text-muted ${className}`}
+    >
+      <Loader2 className="size-4 animate-spin" aria-hidden />
+      {label}
+    </div>
+  );
+}
+
+/**
+ * Client-side pager. Hidden when there's a single page. Page numbers are 1-based.
+ */
+export function Pagination({
+  page,
+  totalPages,
+  onChange,
+  className = "",
+}: {
+  page: number;
+  totalPages: number;
+  onChange: (p: number) => void;
+  className?: string;
+}) {
+  if (totalPages <= 1) return null;
+  const navBtn =
+    "grid size-9 place-items-center rounded-lg bg-white text-ink ring-1 ring-inset ring-line hover:bg-navy-50 disabled:opacity-40 disabled:pointer-events-none [touch-action:manipulation]";
+  return (
+    <nav className={`flex items-center justify-center gap-2 ${className}`} aria-label="Pagination">
+      <button
+        type="button"
+        onClick={() => onChange(page - 1)}
+        disabled={page <= 1}
+        className={navBtn}
+        aria-label="Previous page"
+      >
+        <ChevronLeft className="size-4" aria-hidden />
+      </button>
+      <span className="px-2 text-sm text-muted tabular">
+        Page {page} of {totalPages}
+      </span>
+      <button
+        type="button"
+        onClick={() => onChange(page + 1)}
+        disabled={page >= totalPages}
+        className={navBtn}
+        aria-label="Next page"
+      >
+        <ChevronRight className="size-4" aria-hidden />
+      </button>
+    </nav>
+  );
+}
