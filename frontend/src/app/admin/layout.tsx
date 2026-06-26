@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { LayoutDashboard, FileText, CalendarClock, LogOut, Scale } from "lucide-react";
+import { LayoutDashboard, FileText, CalendarClock, Inbox, LogOut, Scale } from "lucide-react";
 import { AdminAuthProvider, useAdminAuth } from "@/lib/adminAuth";
 
 const nav = [
   { href: "/admin", label: "Cases", icon: LayoutDashboard },
+  { href: "/admin/messages", label: "Messages", icon: Inbox },
   { href: "/admin/blog", label: "Resources", icon: FileText },
   { href: "/admin/slots", label: "Slots", icon: CalendarClock },
 ];
