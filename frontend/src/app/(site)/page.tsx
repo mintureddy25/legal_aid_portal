@@ -78,6 +78,7 @@ export default function HomePage() {
       <Faq />
       <Contact />
       <CtaCard />
+      <FeedbackCta />
     </div>
   );
 }
@@ -777,6 +778,42 @@ function ContactRow({ icon, value }: { icon: React.ReactNode; value: string }) {
       <span className="grid size-11 shrink-0 place-items-center rounded-full bg-neutral-900 text-white">{icon}</span>
       <span className="text-[15px] text-neutral-800">{value}</span>
     </div>
+  );
+}
+
+/* ───────────────────────── Feedback CTA ───────────────────────── */
+function FeedbackCta() {
+  const { t } = useI18n();
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-20 sm:pb-28">
+        <Reveal>
+          <div className="flex flex-col items-center gap-4 text-center">
+            <Image
+              src="/feedback-cartoon.png"
+              alt=""
+              width={120}
+              height={120}
+              className="size-24 animate-float-bob drop-shadow-sm sm:size-28"
+              aria-hidden
+            />
+            <h2 className="text-2xl font-medium tracking-tight text-neutral-900 sm:text-3xl">
+              {t("feedback.home.title")}
+            </h2>
+            <p className="max-w-md text-sm leading-relaxed text-neutral-600">
+              {t("feedback.home.body")}
+            </p>
+            <Link
+              href="/feedback"
+              className="group mt-2 inline-flex items-center gap-2 rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white transition-transform hover:bg-neutral-700 hover:-translate-y-0.5"
+            >
+              {t("feedback.home.button")}
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+            </Link>
+          </div>
+        </Reveal>
+      </div>
+    </section>
   );
 }
 

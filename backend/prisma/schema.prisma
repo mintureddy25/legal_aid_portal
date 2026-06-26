@@ -129,6 +129,20 @@ model ContactMessage {
   @@index([createdAt])
 }
 
+/// Visitor feedback — separate star ratings for the service and the website.
+model Feedback {
+  id            String   @id @default(cuid())
+  serviceRating Int
+  websiteRating Int
+  message       String
+  name          String?
+  email         String?
+  handled       Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+}
+
 /// Bookable consultation slot set by the owner.
 model Slot {
   id          String       @id @default(cuid())

@@ -25,6 +25,7 @@ export function Footer() {
             <Link href="/track" className="hover:text-white transition-colors">{t("nav.track")}</Link>
             <Link href="/resources" className="hover:text-white transition-colors">{t("nav.resources")}</Link>
             <Link href="/book" className="hover:text-white transition-colors">{t("nav.book")}</Link>
+            <Link href="/feedback" className="hover:text-white transition-colors">{t("nav.feedback")}</Link>
           </nav>
 
           <div className="flex flex-col gap-3 text-sm">

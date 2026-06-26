@@ -205,6 +205,26 @@ const en: Dict = {
   "home.cta.body":
     "Discuss your situation with an experienced volunteer. Get clear guidance on your rights and options — no cost, no obligation.",
   "home.cta.button": "Schedule now",
+
+  "nav.feedback": "Feedback",
+  "feedback.title": "Share your feedback",
+  "feedback.welcome":
+    "We're new here and just getting started, and we'd love to hear from you. Your feedback helps us improve — both the help we provide and this website. It only takes a minute.",
+  "feedback.rateService": "Rate our service",
+  "feedback.rateWebsite": "Rate this website",
+  "feedback.ratingRequired": "Please rate both our service and this website.",
+  "feedback.message": "Your feedback",
+  "feedback.messageHint": "Tell us what worked well or what we can improve.",
+  "feedback.name": "Name",
+  "feedback.email": "Email",
+  "feedback.submit": "Send feedback",
+  "feedback.thanks.title": "Thank you for your feedback!",
+  "feedback.thanks.body": "We truly appreciate you taking the time to help us improve.",
+  "feedback.error": "Could not send your feedback. Please try again.",
+  "feedback.home.title": "We'd love your feedback",
+  "feedback.home.body":
+    "We're new here — tell us how we can improve our service or this website.",
+  "feedback.home.button": "Share feedback",
 };
 
 const te: Dict = {
@@ -395,6 +415,26 @@ const te: Dict = {
   "home.cta.body":
     "అనుభవజ్ఞుడైన స్వచ్ఛంద సేవకుడితో మీ పరిస్థితిని చర్చించండి. మీ హక్కులు మరియు ఎంపికలపై స్పష్టమైన మార్గదర్శనం పొందండి — ఎటువంటి ఖర్చు, బాధ్యత లేకుండా.",
   "home.cta.button": "ఇప్పుడే షెడ్యూల్ చేయండి",
+
+  "nav.feedback": "అభిప్రాయం",
+  "feedback.title": "మీ అభిప్రాయాన్ని పంచుకోండి",
+  "feedback.welcome":
+    "మేము ఇక్కడ కొత్తవాళ్లం, ఇప్పుడే ప్రారంభించాము, మీ నుండి వినడానికి మేము ఇష్టపడతాము. మీ అభిప్రాయం మాకు మెరుగుపడటానికి సహాయపడుతుంది — మేము అందించే సహాయం మరియు ఈ వెబ్‌సైట్ రెండూ. ఇది ఒక నిమిషం మాత్రమే పడుతుంది.",
+  "feedback.rateService": "మా సేవను రేట్ చేయండి",
+  "feedback.rateWebsite": "ఈ వెబ్‌సైట్‌ను రేట్ చేయండి",
+  "feedback.ratingRequired": "దయచేసి మా సేవ మరియు ఈ వెబ్‌సైట్ రెండింటినీ రేట్ చేయండి.",
+  "feedback.message": "మీ అభిప్రాయం",
+  "feedback.messageHint": "ఏది బాగా పనిచేసింది లేదా మేము ఏది మెరుగుపరచగలమో చెప్పండి.",
+  "feedback.name": "పేరు",
+  "feedback.email": "ఇమెయిల్",
+  "feedback.submit": "అభిప్రాయం పంపండి",
+  "feedback.thanks.title": "మీ అభిప్రాయానికి ధన్యవాదాలు!",
+  "feedback.thanks.body": "మాకు మెరుగుపడటానికి సహాయం చేసినందుకు మేము నిజంగా కృతజ్ఞులం.",
+  "feedback.error": "మీ అభిప్రాయాన్ని పంపలేకపోయాము. దయచేసి మళ్లీ ప్రయత్నించండి.",
+  "feedback.home.title": "మీ అభిప్రాయం మాకు కావాలి",
+  "feedback.home.body":
+    "మేము ఇక్కడ కొత్తవాళ్లం — మా సేవ లేదా ఈ వెబ్‌సైట్‌ను మేము ఎలా మెరుగుపరచగలమో చెప్పండి.",
+  "feedback.home.button": "అభిప్రాయం పంచుకోండి",
 };
 
 const dicts: Record<Lang, Dict> = { en, te };

@@ -42,7 +42,10 @@
   --radius-2xl: 1.25rem;
 }
 
-html {
+/* NOTE: no global `scroll-behavior: smooth` — it makes the App Router's
+   scroll-to-top on navigation animate/fail, leaving new pages mid-scroll.
+   Smooth scrolling is opt-in via the .smooth-scroll utility instead. */
+.smooth-scroll {
   scroll-behavior: smooth;
 }
 
@@ -52,6 +55,31 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Stylish, theme-matched page scrollbar */
+html {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--color-brand-500) transparent; /* thumb track */
+}
+html::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+html::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+html::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    var(--color-brand-600),
+    var(--color-brand-500)
+  );
+  border-radius: 9999px;
+  border: 2px solid var(--color-canvas); /* inset padding so the thumb looks slim */
+}
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--color-navy-800);
 }
 
 /* Telugu text gets the Telugu-capable font stack */
@@ -97,6 +125,15 @@ button:disabled,
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-up { animation: fade-up 0.4s ease-out both; }
+
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+.animate-float-bob { animation: float-bob 3.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-bob { animation: none; }
+}
 
 /* Tabular figures for data/timers/refs */
 .tabular { font-variant-numeric: tabular-nums; }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Inter, Noto_Sans_Telugu, Geist } from "next/font/google";
 import "./globals.css";
 import { I18nProvider } from "@/lib/i18n";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -55,6 +56,7 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${telugu.variable} ${geist.variable} h-full`}
     >
       <body className="min-h-dvh flex flex-col">
+        <ScrollToTop />
         <I18nProvider>{children}</I18nProvider>
       </body>
     </html>
