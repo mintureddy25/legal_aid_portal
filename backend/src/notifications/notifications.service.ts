@@ -127,15 +127,22 @@ export class NotificationsService {
     durationMin: number;
     reason?: string | null;
   }): Promise<void> {
-    const when = a.startsAt.toLocaleString('en-IN', { dateStyle: 'full', timeStyle: 'short' });
+    // Always render in Indian Standard Time (the server runs in UTC).
+    const whenIST = a.startsAt.toLocaleString('en-IN', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+      timeZone: 'Asia/Kolkata',
+    });
+    const whenSubject = `${whenIST} IST`;
+    const whenBody = `${whenIST} IST (Indian Standard Time)`;
     if (a.email) {
       await this.send(
         a.email,
-        `Your free consultation is booked — ${when}`,
+        `Your free consultation is booked — ${whenSubject}`,
         `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#0f172a">
           <p>Hi ${a.name},</p>
           <p>Your free <b>${a.durationMin}-minute</b> legal consultation is booked for:</p>
-          <p style="font-size:18px;font-weight:700;color:#1D9E75">${when}</p>
+          <p style="font-size:18px;font-weight:700;color:#1D9E75">${whenBody}</p>
           <p>We'll call you at the number you provided. — Nyaya Seva</p>
         </div>`,
       );
@@ -144,10 +151,10 @@ export class NotificationsService {
     if (admin) {
       await this.send(
         admin,
-        `[New Booking] ${a.name} — ${when}`,
+        `[New Booking] ${a.name} — ${whenSubject}`,
         `<div style="font-family:Arial,sans-serif">
           <h3 style="color:#0a2540">New appointment</h3>
-          <p><b>Name:</b> ${a.name}<br/><b>When:</b> ${when}<br/>
+          <p><b>Name:</b> ${a.name}<br/><b>When:</b> ${whenBody}<br/>
           <b>Duration:</b> ${a.durationMin} min<br/>
           <b>Reason:</b> ${a.reason ?? '—'}</p>
         </div>`,
