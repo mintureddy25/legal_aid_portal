@@ -146,6 +146,64 @@ const en: Dict = {
   "book.bookThis": "Book this slot",
   "book.selected": "Selected slot",
   "book.change": "Change",
+
+  // ── Landing page sections ──
+  "home.hero.eyebrow": "Securing your future",
+  "home.hero.title": "Legal solutions and support you can rely on",
+  "home.hero.subtitle":
+    "Free, confidential legal aid for everyone. Our volunteer lawyers guide you through every step — with live chat support and a response within 24 hours.",
+  "home.hero.cta1": "Get help now",
+  "home.hero.cta2": "Track my case",
+  "home.hero.scroll": "Scroll to explore",
+  "home.who.eyebrow": "About us",
+  "home.who.title": "Who we are",
+  "home.who.body":
+    "Nyaya Seva is a pro bono initiative offering free legal guidance to people who need it most — families, women, workers and seniors. Founded by volunteer lawyers, we help our community navigate the legal system with dignity and confidence.",
+  "home.what.eyebrow": "What we do",
+  "home.what.title": "Practical solutions through trusted legal support",
+  "home.what.body":
+    "We focus on clear, effective steps that protect your rights at every stage. From your first question to a resolved case, you are never alone.",
+  "home.what.cta": "Start your request",
+  "home.res.eyebrow": "Resources",
+  "home.res.title": "Guides to know your rights",
+  "home.res.viewall": "View all",
+  "home.res.read": "Read guide",
+  "home.partners.title": "Trusted alongside India's legal-aid network",
+  "home.partners.body": "We work hand in hand with authorities and NGOs to deliver dependable support.",
+  "home.services.eyebrow": "Services",
+  "home.services.title": "Everything you need to stand up for your rights",
+  "home.services.body":
+    "From everyday paperwork to complex disputes, our team helps you act with confidence — and we explain every step in plain language.",
+  "home.team.eyebrow": "Team",
+  "home.team.title": "Meet our expert team",
+  "home.team.body":
+    "A team of dedicated volunteer lawyers with years of experience across a wide range of practice areas — here to help you.",
+  "home.test.eyebrow": "Testimonials",
+  "home.test.title": "Trusted by people across communities",
+  "home.test.body": "Real stories from the people we have stood beside.",
+  "home.faq.eyebrow": "Answers for your questions",
+  "home.faq.title": "Frequently asked questions",
+  "home.contact.eyebrow": "Don't be shy",
+  "home.contact.title": "Reach out",
+  "home.contact.body":
+    "Have a question or need help? Send us a message and a volunteer will get back to you within 24 hours.",
+  "home.contact.name": "Name",
+  "home.contact.email": "Email",
+  "home.contact.subject": "Subject",
+  "home.contact.message": "Message",
+  "home.contact.namePh": "Enter name",
+  "home.contact.emailPh": "you@email.com",
+  "home.contact.subjectPh": "How can we help?",
+  "home.contact.messagePh": "Enter message…",
+  "home.contact.send": "Send message",
+  "home.contact.sending": "Sending…",
+  "home.contact.sentTitle": "Message sent",
+  "home.contact.sentBody": "Thank you. We'll be in touch within 24 hours.",
+  "home.contact.error": "Something went wrong. Please try again or email us directly.",
+  "home.cta.title": "Schedule a free legal consultation",
+  "home.cta.body":
+    "Discuss your situation with an experienced volunteer. Get clear guidance on your rights and options — no cost, no obligation.",
+  "home.cta.button": "Schedule now",
 };
 
 const te: Dict = {
@@ -277,6 +335,64 @@ const te: Dict = {
   "book.bookThis": "ఈ స్లాట్ బుక్ చేయండి",
   "book.selected": "ఎంచుకున్న స్లాట్",
   "book.change": "మార్చండి",
+
+  // ── Landing page sections ──
+  "home.hero.eyebrow": "మీ భవిష్యత్తుకు భద్రత",
+  "home.hero.title": "మీరు నమ్మదగిన న్యాయ పరిష్కారాలు మరియు మద్దతు",
+  "home.hero.subtitle":
+    "ప్రతి ఒక్కరికీ ఉచిత, గోప్యమైన న్యాయ సహాయం. మా స్వచ్ఛంద న్యాయవాదులు ప్రతి దశలో మీకు మార్గనిర్దేశం చేస్తారు — లైవ్ చాట్ మద్దతు మరియు 24 గంటల్లో స్పందనతో.",
+  "home.hero.cta1": "ఇప్పుడే సహాయం పొందండి",
+  "home.hero.cta2": "నా కేసును ట్రాక్ చేయండి",
+  "home.hero.scroll": "చూడటానికి స్క్రోల్ చేయండి",
+  "home.who.eyebrow": "మా గురించి",
+  "home.who.title": "మేము ఎవరం",
+  "home.who.body":
+    "న్యాయ సేవ అనేది అత్యవసరమైన వారికి — కుటుంబాలు, మహిళలు, కార్మికులు మరియు వృద్ధులకు — ఉచిత న్యాయ మార్గదర్శనం అందించే ఒక ఉచిత సేవా కార్యక్రమం. స్వచ్ఛంద న్యాయవాదులచే స్థాపించబడిన మేము, మా సమాజం న్యాయ వ్యవస్థను గౌరవంగా, నమ్మకంగా అర్థం చేసుకోవడంలో సహాయపడతాం.",
+  "home.what.eyebrow": "మేము ఏం చేస్తాం",
+  "home.what.title": "విశ్వసనీయ న్యాయ మద్దతు ద్వారా ఆచరణాత్మక పరిష్కారాలు",
+  "home.what.body":
+    "ప్రతి దశలో మీ హక్కులను రక్షించే స్పష్టమైన, సమర్థవంతమైన చర్యలపై దృష్టి పెడతాం. మీ మొదటి ప్రశ్న నుండి కేసు పరిష్కారం వరకు, మీరు ఎప్పుడూ ఒంటరిగా ఉండరు.",
+  "home.what.cta": "మీ అభ్యర్థనను ప్రారంభించండి",
+  "home.res.eyebrow": "వనరులు",
+  "home.res.title": "మీ హక్కులు తెలుసుకోవడానికి గైడ్‌లు",
+  "home.res.viewall": "అన్నీ చూడండి",
+  "home.res.read": "గైడ్ చదవండి",
+  "home.partners.title": "భారత న్యాయ సహాయ నెట్‌వర్క్‌తో కలిసి విశ్వసనీయం",
+  "home.partners.body": "విశ్వసనీయ మద్దతు అందించడానికి అధికారులు మరియు స్వచ్ఛంద సంస్థలతో కలిసి పనిచేస్తాం.",
+  "home.services.eyebrow": "సేవలు",
+  "home.services.title": "మీ హక్కుల కోసం నిలబడటానికి కావలసినదంతా",
+  "home.services.body":
+    "రోజువారీ పత్రాల నుండి సంక్లిష్ట వివాదాల వరకు, మా బృందం మీకు నమ్మకంగా వ్యవహరించడంలో సహాయపడుతుంది — ప్రతి దశను సరళమైన భాషలో వివరిస్తాం.",
+  "home.team.eyebrow": "బృందం",
+  "home.team.title": "మా నిపుణుల బృందాన్ని కలవండి",
+  "home.team.body":
+    "విస్తృత న్యాయ రంగాలలో సంవత్సరాల అనుభవం ఉన్న అంకితభావం కలిగిన స్వచ్ఛంద న్యాయవాదుల బృందం — మీకు సహాయం చేయడానికి సిద్ధంగా ఉంది.",
+  "home.test.eyebrow": "ప్రశంసలు",
+  "home.test.title": "సమాజాలలోని ప్రజలచే విశ్వసించబడింది",
+  "home.test.body": "మేము అండగా నిలిచిన ప్రజల నిజమైన కథలు.",
+  "home.faq.eyebrow": "మీ ప్రశ్నలకు సమాధానాలు",
+  "home.faq.title": "తరచుగా అడిగే ప్రశ్నలు",
+  "home.contact.eyebrow": "సంకోచించకండి",
+  "home.contact.title": "సంప్రదించండి",
+  "home.contact.body":
+    "ప్రశ్న ఉందా లేదా సహాయం కావాలా? మాకు సందేశం పంపండి, 24 గంటల్లో స్వచ్ఛంద సేవకుడు మిమ్మల్ని సంప్రదిస్తారు.",
+  "home.contact.name": "పేరు",
+  "home.contact.email": "ఇమెయిల్",
+  "home.contact.subject": "విషయం",
+  "home.contact.message": "సందేశం",
+  "home.contact.namePh": "పేరు నమోదు చేయండి",
+  "home.contact.emailPh": "you@email.com",
+  "home.contact.subjectPh": "మేము ఎలా సహాయం చేయగలం?",
+  "home.contact.messagePh": "సందేశం నమోదు చేయండి…",
+  "home.contact.send": "సందేశం పంపండి",
+  "home.contact.sending": "పంపుతోంది…",
+  "home.contact.sentTitle": "సందేశం పంపబడింది",
+  "home.contact.sentBody": "ధన్యవాదాలు. మేము 24 గంటల్లో మిమ్మల్ని సంప్రదిస్తాం.",
+  "home.contact.error": "ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి లేదా నేరుగా మాకు ఇమెయిల్ చేయండి.",
+  "home.cta.title": "ఉచిత న్యాయ సంప్రదింపును షెడ్యూల్ చేయండి",
+  "home.cta.body":
+    "అనుభవజ్ఞుడైన స్వచ్ఛంద సేవకుడితో మీ పరిస్థితిని చర్చించండి. మీ హక్కులు మరియు ఎంపికలపై స్పష్టమైన మార్గదర్శనం పొందండి — ఎటువంటి ఖర్చు, బాధ్యత లేకుండా.",
+  "home.cta.button": "ఇప్పుడే షెడ్యూల్ చేయండి",
 };
 
 const dicts: Record<Lang, Dict> = { en, te };

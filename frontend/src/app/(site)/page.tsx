@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { TextGenerate } from "@/components/TextGenerate";
+import { useI18n } from "@/lib/i18n";
 import {
   STATS,
   WHAT_WE_DO,
@@ -35,6 +36,7 @@ import {
   PARTNERS,
   FAQS,
   CONTACT,
+  tx,
 } from "@/lib/home-data";
 
 const ICONS: Record<string, typeof Scale> = { scale: Scale, home: Home, target: Target, shield: Shield };
@@ -82,6 +84,7 @@ export default function HomePage() {
 
 /* ───────────────────────── Hero ───────────────────────── */
 function Hero() {
+  const { t } = useI18n();
   return (
     <section className="relative overflow-hidden" style={{ backgroundColor: OFFWHITE }}>
       <FlowLines />
@@ -89,18 +92,17 @@ function Hero() {
         <div className="mx-auto max-w-5xl text-center">
           <Reveal>
             <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-500">
-              Securing your future
+              {t("home.hero.eyebrow")}
             </span>
           </Reveal>
           <Reveal delay={70}>
             <h1 className="mx-auto mt-5 max-w-4xl text-[2.6rem] font-medium leading-[1.02] tracking-[-0.03em] text-neutral-900 sm:text-6xl lg:text-[5.2rem]">
-              Legal solutions and support you can rely on
+              {t("home.hero.title")}
             </h1>
           </Reveal>
           <Reveal delay={140}>
             <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-neutral-600 sm:text-lg">
-              Free, confidential legal aid for everyone. Our volunteer lawyers guide you through
-              every step — with live chat support and a response within 24 hours.
+              {t("home.hero.subtitle")}
             </p>
           </Reveal>
           <Reveal delay={210}>
@@ -109,14 +111,14 @@ function Hero() {
                 href="/apply"
                 className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-neutral-900 px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-neutral-700 sm:w-auto"
               >
-                Get help now
+                {t("home.hero.cta1")}
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
               </Link>
               <Link
                 href="/track"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-medium text-neutral-900 ring-1 ring-neutral-300 transition-colors hover:bg-neutral-50 sm:w-auto"
               >
-                Track my case
+                {t("home.hero.cta2")}
               </Link>
             </div>
           </Reveal>
@@ -134,7 +136,7 @@ function Hero() {
 
         <div className="mt-10 flex justify-center">
           <span className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-neutral-400">
-            <ArrowDown className="size-4 animate-bounce" aria-hidden /> Scroll to explore
+            <ArrowDown className="size-4 animate-bounce" aria-hidden /> {t("home.hero.scroll")}
           </span>
         </div>
       </div>
@@ -199,21 +201,23 @@ function FlowLines() {
 
 /* ───────────────────────── Who we are ───────────────────────── */
 function WhoWeAre() {
+  const { t, lang } = useI18n();
   return (
     <section className="relative overflow-hidden bg-neutral-950 text-white">
       <DarkTexture />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
-            <Eyebrow dark>About us</Eyebrow>
+            <Eyebrow dark>{t("home.who.eyebrow")}</Eyebrow>
           </Reveal>
           <Reveal delay={90}>
-            <h2 className="mt-6 text-3xl font-medium tracking-tight sm:text-4xl">Who we are</h2>
+            <h2 className="mt-6 text-3xl font-medium tracking-tight sm:text-4xl">{t("home.who.title")}</h2>
           </Reveal>
           <TextGenerate
+            key={lang}
             as="p"
             className="mt-5 text-neutral-400 leading-relaxed"
-            text="Nyaya Seva is a pro bono initiative offering free legal guidance to people who need it most — families, women, workers and seniors. Founded by volunteer lawyers, we help our community navigate the legal system with dignity and confidence."
+            text={t("home.who.body")}
           />
         </div>
 
@@ -222,7 +226,9 @@ function WhoWeAre() {
             <Reveal key={s.label} delay={i * 100} variant="scale">
               <div className="rounded-2xl bg-white/5 p-7 ring-1 ring-white/10">
                 <div className="text-4xl font-medium tracking-tight tabular">{s.value}</div>
-                <div className="mt-2 text-sm uppercase tracking-wider text-neutral-400">{s.label}</div>
+                <div className="mt-2 text-sm uppercase tracking-wider text-neutral-400">
+                  {tx(lang, s.label, s.labelTe)}
+                </div>
               </div>
             </Reveal>
           ))}
@@ -234,25 +240,27 @@ function WhoWeAre() {
 
 /* ───────────────────────── What we do ───────────────────────── */
 function WhatWeDo() {
+  const { t, lang } = useI18n();
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left" className="lg:sticky lg:top-28 lg:self-start">
-            <Eyebrow>What we do</Eyebrow>
+            <Eyebrow>{t("home.what.eyebrow")}</Eyebrow>
             <h2 className="mt-6 text-3xl font-medium leading-tight tracking-tight text-neutral-900 sm:text-4xl">
-              Practical solutions through trusted legal support
+              {t("home.what.title")}
             </h2>
             <TextGenerate
+              key={lang}
               as="p"
               className="mt-5 max-w-md text-neutral-600 leading-relaxed"
-              text="We focus on clear, effective steps that protect your rights at every stage. From your first question to a resolved case, you are never alone."
+              text={t("home.what.body")}
             />
             <Link
               href="/apply"
               className="group mt-7 inline-flex items-center gap-2 rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-700"
             >
-              Start your request
+              {t("home.what.cta")}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
             </Link>
           </Reveal>
@@ -266,8 +274,8 @@ function WhatWeDo() {
                     <span className="grid size-12 place-items-center rounded-xl bg-neutral-900 text-white transition-colors group-hover:bg-neutral-700">
                       <Icon className="size-5" aria-hidden />
                     </span>
-                    <h3 className="mt-5 text-lg font-medium tracking-tight text-neutral-900">{f.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-neutral-600">{f.body}</p>
+                    <h3 className="mt-5 text-lg font-medium tracking-tight text-neutral-900">{tx(lang, f.title, f.titleTe)}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-neutral-600">{tx(lang, f.body, f.bodyTe)}</p>
                   </div>
                 </Reveal>
               );
@@ -289,6 +297,7 @@ interface ResourceMeta {
 }
 
 function Resources() {
+  const { t } = useI18n();
   const [posts, setPosts] = useState<ResourceMeta[] | null>(null);
 
   useEffect(() => {
@@ -302,16 +311,16 @@ function Resources() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
         <Reveal className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <Eyebrow>Resources</Eyebrow>
+            <Eyebrow>{t("home.res.eyebrow")}</Eyebrow>
             <h2 className="mt-6 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl">
-              Guides to know your rights
+              {t("home.res.title")}
             </h2>
           </div>
           <Link
             href="/resources"
             className="inline-flex items-center gap-2 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-neutral-700"
           >
-            View all <ArrowUpRight className="size-4" aria-hidden />
+            {t("home.res.viewall")} <ArrowUpRight className="size-4" aria-hidden />
           </Link>
         </Reveal>
 
@@ -336,6 +345,7 @@ function Resources() {
 }
 
 function ResourceCard({ r }: { r: ResourceMeta }) {
+  const { t } = useI18n();
   return (
     <Link
       href={`/resources/${r.slug}`}
@@ -367,7 +377,7 @@ function ResourceCard({ r }: { r: ResourceMeta }) {
         </h3>
         {r.excerpt && <p className="mt-2 text-sm leading-relaxed text-neutral-600">{r.excerpt}</p>}
         <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-neutral-900">
-          Read guide <ArrowUpRight className="size-4" aria-hidden />
+          {t("home.res.read")} <ArrowUpRight className="size-4" aria-hidden />
         </span>
       </div>
     </Link>
@@ -383,16 +393,15 @@ const FALLBACK_RESOURCES: ResourceMeta[] = [
 
 /* ───────────────────────── Partners / trusted ───────────────────────── */
 function Partners() {
+  const { t } = useI18n();
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-24">
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-2xl font-medium tracking-tight text-neutral-900 sm:text-3xl">
-            Trusted alongside India&apos;s legal-aid network
+            {t("home.partners.title")}
           </h2>
-          <p className="mt-4 text-neutral-600">
-            We work hand in hand with authorities and NGOs to deliver dependable support.
-          </p>
+          <p className="mt-4 text-neutral-600">{t("home.partners.body")}</p>
         </Reveal>
 
         <Reveal className="mt-12">
@@ -416,19 +425,21 @@ function Partners() {
 
 /* ───────────────────────── Everything you need ───────────────────────── */
 function Everything() {
+  const { t, lang } = useI18n();
   return (
     <section style={{ backgroundColor: OFFWHITE }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left" className="lg:sticky lg:top-28 lg:self-start">
-            <Eyebrow>Services</Eyebrow>
+            <Eyebrow>{t("home.services.eyebrow")}</Eyebrow>
             <h2 className="mt-6 text-3xl font-medium leading-tight tracking-tight text-neutral-900 sm:text-4xl">
-              Everything you need to stand up for your rights
+              {t("home.services.title")}
             </h2>
             <TextGenerate
+              key={lang}
               as="p"
               className="mt-5 max-w-md text-neutral-600 leading-relaxed"
-              text="From everyday paperwork to complex disputes, our team helps you act with confidence — and we explain every step in plain language."
+              text={t("home.services.body")}
             />
           </Reveal>
 
@@ -440,8 +451,8 @@ function Everything() {
                     <Building2 className="size-5" aria-hidden />
                   </span>
                   <div>
-                    <h3 className="text-base font-semibold tracking-tight">{s.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-neutral-400">{s.body}</p>
+                    <h3 className="text-base font-semibold tracking-tight">{tx(lang, s.title, s.titleTe)}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-neutral-400">{tx(lang, s.body, s.bodyTe)}</p>
                   </div>
                 </div>
               </Reveal>
@@ -455,17 +466,15 @@ function Everything() {
 
 /* ───────────────────────── Meet our expert team ───────────────────────── */
 function Team() {
+  const { t, lang } = useI18n();
   return (
     <section className="relative overflow-hidden bg-neutral-950 text-white">
       <DarkTexture />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow dark>Team</Eyebrow>
-          <h2 className="mt-6 text-3xl font-medium tracking-tight sm:text-4xl">Meet our expert team</h2>
-          <p className="mt-5 text-neutral-400 leading-relaxed">
-            A team of dedicated volunteer lawyers with years of experience across a wide range of
-            practice areas — here to help you.
-          </p>
+          <Eyebrow dark>{t("home.team.eyebrow")}</Eyebrow>
+          <h2 className="mt-6 text-3xl font-medium tracking-tight sm:text-4xl">{t("home.team.title")}</h2>
+          <p className="mt-5 text-neutral-400 leading-relaxed">{t("home.team.body")}</p>
         </Reveal>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -494,9 +503,9 @@ function Team() {
                   )}
                 </div>
                 <div className="p-6">
-                  <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">{e.role}</div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">{tx(lang, e.role, e.roleTe)}</div>
                   <h3 className="mt-1 text-xl font-semibold tracking-tight">{e.name}</h3>
-                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-400">{e.bio}</p>
+                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-400">{tx(lang, e.bio, e.bioTe)}</p>
                 </div>
               </article>
             </Reveal>
@@ -509,6 +518,7 @@ function Team() {
 
 /* ───────────────────────── Testimonials ───────────────────────── */
 function Testimonials() {
+  const { t, lang } = useI18n();
   const [idx, setIdx] = useState(0);
   const n = TESTIMONIALS.length;
   const go = (d: number) => setIdx((p) => (p + d + n) % n);
@@ -517,11 +527,11 @@ function Testimonials() {
     <section className="bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow>Testimonials</Eyebrow>
+          <Eyebrow>{t("home.test.eyebrow")}</Eyebrow>
           <h2 className="mt-6 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl">
-            Trusted by people across communities
+            {t("home.test.title")}
           </h2>
-          <p className="mt-5 text-neutral-600">Real stories from the people we have stood beside.</p>
+          <p className="mt-5 text-neutral-600">{t("home.test.body")}</p>
         </Reveal>
 
         <Reveal className="mt-12">
@@ -535,11 +545,11 @@ function Testimonials() {
                   <figure className="mx-auto max-w-3xl rounded-3xl bg-[#f3f2ef] p-8 text-center ring-1 ring-neutral-200 sm:p-12">
                     <Quote className="mx-auto size-9 text-neutral-300" aria-hidden />
                     <blockquote className="mt-6 text-xl font-medium leading-relaxed tracking-tight text-neutral-900 sm:text-2xl">
-                      &ldquo;{tm.quote}&rdquo;
+                      &ldquo;{tx(lang, tm.quote, tm.quoteTe)}&rdquo;
                     </blockquote>
                     <figcaption className="mt-8">
                       <div className="text-sm font-semibold text-neutral-900">{tm.name}</div>
-                      <div className="text-sm text-neutral-500">{tm.role}</div>
+                      <div className="text-sm text-neutral-500">{tx(lang, tm.role, tm.roleTe)}</div>
                     </figcaption>
                   </figure>
                 </div>
@@ -584,14 +594,15 @@ function Testimonials() {
 
 /* ───────────────────────── FAQ ───────────────────────── */
 function Faq() {
+  const { t, lang } = useI18n();
   const [open, setOpen] = useState(0);
   return (
     <section style={{ backgroundColor: OFFWHITE }}>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 py-20 sm:py-28">
         <Reveal className="text-center">
-          <Eyebrow>Answers for your questions</Eyebrow>
+          <Eyebrow>{t("home.faq.eyebrow")}</Eyebrow>
           <h2 className="mt-6 text-3xl font-medium tracking-tight text-neutral-900 sm:text-4xl">
-            Frequently asked questions
+            {t("home.faq.title")}
           </h2>
         </Reveal>
 
@@ -614,14 +625,14 @@ function Faq() {
                     >
                       {i + 1}
                     </span>
-                    <span className="flex-1 text-base font-medium tracking-tight text-neutral-900">{f.q}</span>
+                    <span className="flex-1 text-base font-medium tracking-tight text-neutral-900">{tx(lang, f.q, f.qTe)}</span>
                     <span className="grid size-8 shrink-0 place-items-center rounded-full ring-1 ring-neutral-300 text-neutral-700">
                       {isOpen ? <Minus className="size-4" aria-hidden /> : <Plus className="size-4" aria-hidden />}
                     </span>
                   </button>
                   <div className={`accordion-panel ${isOpen ? "open" : ""}`}>
                     <div>
-                      <p className="pb-5 pl-11 pr-12 text-sm leading-relaxed text-neutral-600">{f.a}</p>
+                      <p className="pb-5 pl-11 pr-12 text-sm leading-relaxed text-neutral-600">{tx(lang, f.a, f.aTe)}</p>
                     </div>
                   </div>
                 </div>
@@ -636,6 +647,7 @@ function Faq() {
 
 /* ───────────────────────── Contact ───────────────────────── */
 function Contact() {
+  const { t, lang } = useI18n();
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -671,16 +683,15 @@ function Contact() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20 sm:py-28">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
-            <Eyebrow>Don&apos;t be shy</Eyebrow>
-            <h2 className="mt-6 text-4xl font-medium tracking-tight text-neutral-900 sm:text-5xl">Reach out</h2>
-            <p className="mt-5 max-w-md text-neutral-600 leading-relaxed">
-              Have a question or need help? Send us a message and a volunteer will get back to you
-              within 24 hours.
-            </p>
+            <Eyebrow>{t("home.contact.eyebrow")}</Eyebrow>
+            <h2 className="mt-6 text-4xl font-medium tracking-tight text-neutral-900 sm:text-5xl">
+              {t("home.contact.title")}
+            </h2>
+            <p className="mt-5 max-w-md text-neutral-600 leading-relaxed">{t("home.contact.body")}</p>
             <div className="mt-10 space-y-5">
               <ContactRow icon={<Phone className="size-5" aria-hidden />} value={CONTACT.phone} />
               <ContactRow icon={<Mail className="size-5" aria-hidden />} value={CONTACT.email} />
-              <ContactRow icon={<MapPin className="size-5" aria-hidden />} value={CONTACT.address} />
+              <ContactRow icon={<MapPin className="size-5" aria-hidden />} value={tx(lang, CONTACT.address, CONTACT.addressTe)} />
             </div>
           </Reveal>
 
@@ -689,53 +700,51 @@ function Contact() {
               {sent ? (
                 <div className="flex h-full min-h-72 flex-col items-center justify-center text-center">
                   <CheckCircle2 className="size-12 text-neutral-900" aria-hidden />
-                  <h3 className="mt-4 text-xl font-medium tracking-tight text-neutral-900">Message sent</h3>
-                  <p className="mt-2 text-sm text-neutral-600">
-                    Thank you, {form.name || "friend"}. We&apos;ll be in touch within 24 hours.
-                  </p>
+                  <h3 className="mt-4 text-xl font-medium tracking-tight text-neutral-900">{t("home.contact.sentTitle")}</h3>
+                  <p className="mt-2 text-sm text-neutral-600">{t("home.contact.sentBody")}</p>
                 </div>
               ) : (
                 <form onSubmit={submit} className="grid gap-6">
                   <div className="grid gap-6 sm:grid-cols-2">
                     <label className="block">
-                      <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Name</span>
+                      <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">{t("home.contact.name")}</span>
                       <input
                         required
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        placeholder="Enter name"
+                        placeholder={t("home.contact.namePh")}
                         className={field}
                       />
                     </label>
                     <label className="block">
-                      <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Email</span>
+                      <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">{t("home.contact.email")}</span>
                       <input
                         required
                         type="email"
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        placeholder="you@email.com"
+                        placeholder={t("home.contact.emailPh")}
                         className={field}
                       />
                     </label>
                   </div>
                   <label className="block">
-                    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Subject</span>
+                    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">{t("home.contact.subject")}</span>
                     <input
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      placeholder="How can we help?"
+                      placeholder={t("home.contact.subjectPh")}
                       className={field}
                     />
                   </label>
                   <label className="block">
-                    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Message</span>
+                    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">{t("home.contact.message")}</span>
                     <textarea
                       required
                       rows={3}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      placeholder="Enter message…"
+                      placeholder={t("home.contact.messagePh")}
                       className={`${field} resize-none`}
                     />
                   </label>
@@ -773,6 +782,7 @@ function ContactRow({ icon, value }: { icon: React.ReactNode; value: string }) {
 
 /* ───────────────────────── CTA card ───────────────────────── */
 function CtaCard() {
+  const { t } = useI18n();
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-20 sm:pb-28">
@@ -793,11 +803,10 @@ function CtaCard() {
                 </span>
                 <div>
                   <h2 className="text-2xl font-medium tracking-tight text-white sm:text-3xl">
-                    Schedule a free legal consultation
+                    {t("home.cta.title")}
                   </h2>
                   <p className="mt-2 max-w-md text-sm leading-relaxed text-neutral-400">
-                    Discuss your situation with an experienced volunteer. Get clear guidance on your
-                    rights and options — no cost, no obligation.
+                    {t("home.cta.body")}
                   </p>
                 </div>
               </div>
@@ -805,7 +814,7 @@ function CtaCard() {
                 href="/book"
                 className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-neutral-900 hover:bg-neutral-200"
               >
-                Schedule now
+                {t("home.cta.button")}
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
               </Link>
             </div>

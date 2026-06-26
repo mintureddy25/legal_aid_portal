@@ -38,7 +38,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col bg-canvas md:flex-row">
       {/* Sidebar (desktop) / top bar (mobile) */}
-      <aside className="flex shrink-0 flex-col border-b border-line bg-navy-800 text-white md:w-60 md:border-b-0 md:border-r md:border-white/10">
+      <aside className="sticky top-0 z-30 flex shrink-0 flex-col border-b border-line bg-navy-800 text-white md:h-dvh md:w-60 md:self-start md:border-b-0 md:border-r md:border-white/10">
         <div className="flex items-center justify-between px-4 py-4 md:flex-col md:items-start md:gap-6">
           <Link href="/admin" className="flex items-center gap-2 font-display text-lg font-semibold">
             <span className="grid size-8 place-items-center rounded-lg bg-brand-500">
