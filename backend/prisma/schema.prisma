@@ -31,6 +31,9 @@ enum AppointmentStatus {
   CONFIRMED
   CANCELLED
   COMPLETED
+  ATTENDED
+  NO_SHOW
+  TIMED_OUT
 }
 
 /// A legal-aid intake case. `reference` is the public LA-XXXXXX id.

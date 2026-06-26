@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { AppointmentStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
 
@@ -90,7 +91,17 @@ export class AppointmentsService {
 
   bookings() {
     return this.prisma.appointment.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { slot: { startsAt: 'desc' } },
+      include: { slot: true },
+    });
+  }
+
+  async setStatus(id: string, status: AppointmentStatus) {
+    const appt = await this.prisma.appointment.findUnique({ where: { id } });
+    if (!appt) throw new NotFoundException('Booking not found');
+    return this.prisma.appointment.update({
+      where: { id },
+      data: { status },
       include: { slot: true },
     });
   }

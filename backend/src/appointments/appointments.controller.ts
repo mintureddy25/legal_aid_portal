@@ -4,12 +4,14 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import {
   IsArray,
   IsDateString,
+  IsEnum,
   IsInt,
   IsOptional,
   IsString,
@@ -18,6 +20,7 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+import { AppointmentStatus } from '@prisma/client';
 import { AppointmentsService } from './appointments.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -33,6 +36,10 @@ class BookDto {
 class CreateSlotsDto {
   @IsArray() @IsDateString({}, { each: true }) starts!: string[];
   @IsOptional() @IsInt() @Min(5) @Max(120) durationMin?: number;
+}
+
+class UpdateBookingStatusDto {
+  @IsEnum(AppointmentStatus) status!: AppointmentStatus;
 }
 
 @Controller('appointments')
@@ -61,6 +68,12 @@ export class AppointmentsController {
   @Get('admin/bookings')
   bookings() {
     return this.appts.bookings();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('admin/bookings/:id/status')
+  setBookingStatus(@Param('id') id: string, @Body() dto: UpdateBookingStatusDto) {
+    return this.appts.setStatus(id, dto.status);
   }
 
   @UseGuards(JwtAuthGuard)
