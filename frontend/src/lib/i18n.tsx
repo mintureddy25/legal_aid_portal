@@ -110,6 +110,7 @@ const en: Dict = {
   "track.submitted": "Submitted",
   "track.updated": "Last updated",
   "track.openChat": "Open live chat",
+  "track.chatClosed": "This case is closed. Live chat is no longer available.",
 
   "status.PENDING": "Pending review",
   "status.IN_PROGRESS": "In progress",
@@ -302,6 +303,7 @@ const te: Dict = {
   "track.submitted": "సమర్పించింది",
   "track.updated": "చివరి నవీకరణ",
   "track.openChat": "లైవ్ చాట్ తెరవండి",
+  "track.chatClosed": "ఈ కేసు ముగిసింది. లైవ్ చాట్ ఇకపై అందుబాటులో లేదు.",
 
   "status.PENDING": "సమీక్ష పెండింగ్",
   "status.IN_PROGRESS": "ప్రాసెస్‌లో ఉంది",

@@ -15,6 +15,7 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  Matches,
   Max,
   MaxLength,
   Min,
@@ -27,7 +28,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 class BookDto {
   @IsString() slotId!: string;
   @IsString() @MinLength(2) @MaxLength(120) name!: string;
-  @IsString() @MinLength(7) @MaxLength(15) phone!: string;
+  @IsString() @Matches(/^\d{10}$/, { message: 'phone must be a 10-digit number' }) phone!: string;
   @IsOptional() @IsString() email?: string;
   @IsOptional() @IsString() @MaxLength(300) reason?: string;
   @IsOptional() @IsString() @MaxLength(20) caseRef?: string;

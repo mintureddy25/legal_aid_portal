@@ -5,6 +5,7 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  Matches,
   Max,
   MaxLength,
   Min,
@@ -31,8 +32,7 @@ export class CreateCaseDto {
   age?: number;
 
   @IsString()
-  @MinLength(7)
-  @MaxLength(15)
+  @Matches(/^\d{10}$/, { message: 'phone must be a 10-digit number' })
   phone!: string;
 
   @IsOptional()

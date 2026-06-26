@@ -44,6 +44,10 @@ export default function BookPage() {
   async function book(e: React.FormEvent) {
     e.preventDefault();
     if (!selected) return;
+    if (!/^\d{10}$/.test(form.phone)) {
+      setError("Enter a valid 10-digit phone number");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
@@ -186,10 +190,11 @@ export default function BookPage() {
                   <input
                     id="bphone"
                     type="tel"
-                    inputMode="tel"
+                    inputMode="numeric"
+                    maxLength={10}
                     className={inputClass}
                     value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })}
                     required
                   />
                 </Field>

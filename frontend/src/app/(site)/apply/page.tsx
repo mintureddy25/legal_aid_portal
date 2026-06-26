@@ -71,7 +71,7 @@ function ApplyForm() {
     if (s === 1 && !form.category) e.category = "Please choose a category";
     if (s === 2) {
       if (form.name.trim().length < 2) e.name = "Enter your full name";
-      if (!/^[0-9+\-\s]{7,15}$/.test(form.phone)) e.phone = "Enter a valid phone number";
+      if (!/^\d{10}$/.test(form.phone)) e.phone = "Enter a valid 10-digit phone number";
       if (form.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
         e.email = "Enter a valid email";
       if (form.age && (Number(form.age) < 1 || Number(form.age) > 120))
@@ -202,11 +202,12 @@ function ApplyForm() {
                 <input
                   id="phone"
                   type="tel"
-                  inputMode="tel"
+                  inputMode="numeric"
                   autoComplete="tel"
+                  maxLength={10}
                   className={inputClass}
                   value={form.phone}
-                  onChange={(e) => set("phone", e.target.value)}
+                  onChange={(e) => set("phone", e.target.value.replace(/\D/g, "").slice(0, 10))}
                 />
               </Field>
               <Field label={t("form.email")} htmlFor="email" error={errors.email}>

@@ -138,13 +138,19 @@ function Track() {
               })}
             </ol>
 
-            <Link
-              href={`/chat/${result.reference}`}
-              className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 text-sm font-medium text-white hover:bg-brand-600"
-            >
-              <MessagesSquare className="size-4" aria-hidden />
-              {t("track.openChat")}
-            </Link>
+            {result.status === "CLOSED" ? (
+              <p className="mt-6 rounded-lg bg-slate-50 p-3 text-center text-sm text-muted ring-1 ring-line">
+                {t("track.chatClosed")}
+              </p>
+            ) : (
+              <Link
+                href={`/chat/${result.reference}`}
+                className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-brand-500 px-5 text-sm font-medium text-white hover:bg-brand-600"
+              >
+                <MessagesSquare className="size-4" aria-hidden />
+                {t("track.openChat")}
+              </Link>
+            )}
           </div>
         )}
       </div>
